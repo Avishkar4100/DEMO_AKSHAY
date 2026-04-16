@@ -13,8 +13,8 @@ Tasks Implemented:
 import os
 from flask import Flask
 from flask_login import LoginManager
-from config import config
-from models import db, User
+from .config import config
+from .models import db, User
 
 
 def create_app(config_name=None):
@@ -53,9 +53,9 @@ def create_app(config_name=None):
     with app.app_context():
         db.create_all()
     
-    # Register blueprints (will be added as we implement other tasks)
-    # from routes import main_bp
-    # app.register_blueprint(main_bp)
+    # Register blueprints
+    from .routes import auth_bp
+    app.register_blueprint(auth_bp)
     
     # Health check route
     @app.route('/health')

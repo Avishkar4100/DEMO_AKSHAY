@@ -10,7 +10,7 @@ This module provides decorators for protecting routes based on:
 from functools import wraps
 from flask import abort, redirect, url_for, session
 from flask_login import current_user
-from roles import Role, Permission, RolePermissionMap
+from .roles import Role, Permission, RolePermissionMap
 
 
 def role_required(*required_roles: Role):
