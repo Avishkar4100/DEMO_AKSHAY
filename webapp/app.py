@@ -83,6 +83,23 @@ def create_app(config_name=None):
         """Simple health check endpoint"""
         return {'status': 'OK', 'message': 'HMS API is running'}, 200
     
+    # Dashboard placeholder route
+    @app.route('/dashboard')
+    def dashboard():
+        """Dashboard placeholder (HOS-4 and beyond)"""
+        from flask import redirect, url_for
+        from flask_login import current_user
+        
+        # Placeholder: redirect back to login if not authenticated
+        # In the future, this will show the actual dashboard
+        if not current_user.is_authenticated:
+            return redirect(url_for('login.login_page'))
+        
+        return {
+            'message': 'Dashboard (Coming soon - HOS-4+)',
+            'user': current_user.username
+        }, 200
+    
     return app
 
 
