@@ -1,10 +1,17 @@
 """
 User Login Routes - HOS-2 User Login System
 Provides endpoints for user login form handling and session management
+
+Security Features:
+- CSRF protection on all form submissions (Flask-WTF)
+- Session-based authentication (Flask-Login)
+- Secure password validation
+- Input sanitization
 """
 
 from flask import Blueprint, request, jsonify, render_template, redirect, url_for, session, make_response
 from flask_login import current_user, login_required
+from ..security import csrf
 from ..login import LoginSession, LoginForm, login_required as custom_login_required
 from ..auth import AuthenticationError
 
@@ -27,6 +34,7 @@ def login_page():
 
 
 @login_bp.route('/api', methods=['POST'])
+@csrf.exempt  # API endpoints use token/header-based auth instead of CSRF
 def login_api():
     """
     Handle user login API request.
@@ -184,6 +192,7 @@ def get_session():
 
 
 @login_bp.route('/validate-session', methods=['POST'])
+@csrf.exempt  # API endpoint
 def validate_session():
     """
     Validate if current session is still valid.
@@ -242,6 +251,7 @@ def check_login():
 
 
 @login_bp.route('/logout', methods=['POST', 'GET'])
+@csrf.exempt  # Allow logout without CSRF token
 def logout():
     """
     Logout current user and destroy session.

@@ -8,6 +8,17 @@ Tasks Implemented:
   - Assigned specific permissions to each role
   - Created role-based decorators
   - Set up User model with role assignment
+
+- HOS-3: Backend Authentication (COMPLETE)
+  - User login with password hashing
+  - User registration with validation
+  - Credential validation and session management
+
+- HOS-2: User Login System (COMPLETE)
+  - Session management with Flask-Login
+  - Login form handling (HTML and API)
+  - Form validation and data sanitization
+  - CSRF protection with Flask-WTF
 """
 
 import os
@@ -15,6 +26,7 @@ from flask import Flask
 from flask_login import LoginManager
 from .config import config
 from .models import db, User
+from .security import csrf, SecurityHeaders
 
 
 def create_app(config_name=None):
@@ -37,11 +49,12 @@ def create_app(config_name=None):
     
     # Initialize extensions
     db.init_app(app)
+    csrf.init_app(app)  # Initialize CSRF protection
     
     # Initialize Flask-Login
     login_manager = LoginManager()
     login_manager.init_app(app)
-    login_manager.login_view = 'login'
+    login_manager.login_view = 'login.login_page'
     login_manager.login_message = 'Please log in to access this page.'
     
     @login_manager.user_loader
@@ -58,6 +71,11 @@ def create_app(config_name=None):
     from .routes.login import login_bp
     app.register_blueprint(auth_bp)
     app.register_blueprint(login_bp)
+    
+    # Apply security headers to all responses
+    @app.after_request
+    def apply_security_headers(response):
+        return SecurityHeaders.apply_security_headers(response)
     
     # Health check route
     @app.route('/health')

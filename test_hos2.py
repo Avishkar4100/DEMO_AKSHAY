@@ -298,6 +298,7 @@ class TestHOS2:
         assert response.status_code == 401
         print("  ✓ Form login rejects invalid credentials (401)")
         
+        
         return True
     
     def test_session_endpoint(self):
