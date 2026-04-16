@@ -55,7 +55,9 @@ def create_app(config_name=None):
     
     # Register blueprints
     from .routes import auth_bp
+    from .routes.login import login_bp
     app.register_blueprint(auth_bp)
+    app.register_blueprint(login_bp)
     
     # Health check route
     @app.route('/health')
