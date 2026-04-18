@@ -13,6 +13,7 @@ from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
 from ..services.aggregation import DataAggregationService
 from ..services.statistics import StatisticsService
+from ..services.realtime import RealtimeService, CacheManager
 from ..decorators import permission_required
 from ..roles import Permission
 
@@ -450,4 +451,256 @@ def get_revenue_statistics():
         return jsonify({
             'success': False,
             'error': 'Failed to retrieve revenue statistics'
+        }), 500
+
+
+# =====================================================================
+# HOS-18: Real-time Updates Endpoints
+# =====================================================================
+
+@dashboard_bp.route('/realtime/config', methods=['GET'])
+@login_required
+def get_realtime_config():
+    """
+    Get real-time update configuration for frontend.
+    
+    Returns refresh interval, update strategy, and caching settings
+    to configure auto-refresh on client-side.
+    
+    Response (200):
+        {
+            "refresh_interval_ms": 10000,
+            "update_strategy": "polling",
+            "caching_enabled": true,
+            "cache_ttl_seconds": 30
+        }
+    """
+    try:
+        config = RealtimeService.get_refresh_config()
+        return jsonify(config), 200
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': 'Failed to retrieve real-time configuration'
+        }), 500
+
+
+@dashboard_bp.route('/realtime/metrics', methods=['GET'])
+@login_required
+def get_realtime_metrics():
+    """
+    Get current metrics with optimized caching.
+    
+    Uses cache when available to minimize API calls.
+    Reduces server load while maintaining data freshness.
+    
+    Response (200):
+        {
+            "total_patients": 150,
+            "appointments_today": 45,
+            "revenue_today": 2500.00,
+            "bed_occupancy": 78.5,
+            "staff_utilization": 85.2,
+            "cached": true,
+            "timestamp": "2026-04-18T12:00:00Z"
+        }
+    """
+    try:
+        metrics = RealtimeService.get_current_metrics()
+        return jsonify(metrics), 200
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': 'Failed to retrieve real-time metrics'
+        }), 500
+
+
+@dashboard_bp.route('/realtime/charts', methods=['GET'])
+@login_required
+def get_realtime_charts():
+    """
+    Get chart data with optimized caching.
+    
+    Provides data for all dashboard visualizations with caching
+    to reduce database queries.
+    
+    Response (200):
+        {
+            "appointment_status": {...},
+            "revenue_trend": {...},
+            "patient_distribution": {...},
+            "department_metrics": {...},
+            "cached": true,
+            "timestamp": "2026-04-18T12:00:00Z"
+        }
+    """
+    try:
+        charts = RealtimeService.get_chart_data()
+        return jsonify(charts), 200
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': 'Failed to retrieve real-time chart data'
+        }), 500
+
+
+@dashboard_bp.route('/realtime/status', methods=['GET'])
+@login_required
+def get_realtime_status():
+    """
+    Get real-time update status and statistics.
+    
+    Returns information about last update, next scheduled update,
+    and cache performance metrics.
+    
+    Response (200):
+        {
+            "status": "active",
+            "last_update": "2026-04-18T12:00:00Z",
+            "next_update": "2026-04-18T12:00:10Z",
+            "refresh_interval_ms": 10000,
+            "cache_hit_rate": 0.85,
+            "cache_entries": 12,
+            "total_hits": 1247,
+            "total_misses": 218
+        }
+    """
+    try:
+        status = RealtimeService.get_update_status()
+        return jsonify(status), 200
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': 'Failed to retrieve real-time status'
+        }), 500
+
+
+@dashboard_bp.route('/realtime/performance', methods=['GET'])
+@login_required
+@permission_required(Permission.MANAGE_SYSTEM)
+def get_realtime_performance():
+    """
+    Get performance metrics for real-time system monitoring.
+    
+    Requires: MANAGE_SYSTEM permission (admin only)
+    
+    Returns detailed performance statistics including cache hit rates,
+    memory usage, and response times.
+    
+    Response (200):
+        {
+            "cache": {
+                "hit_rate": "84.5%",
+                "entries": 12,
+                "size_mb": "0.45",
+                "hits": 1247,
+                "misses": 218
+            },
+            "performance": {
+                "refresh_interval_ms": 10000,
+                "cache_ttl_seconds": 30,
+                "caching_enabled": true
+            },
+            "timestamp": "2026-04-18T12:00:00Z"
+        }
+    """
+    try:
+        performance = RealtimeService.get_performance_metrics()
+        return jsonify(performance), 200
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': 'Failed to retrieve performance metrics'
+        }), 500
+
+
+@dashboard_bp.route('/realtime/invalidate-cache', methods=['POST'])
+@login_required
+@permission_required(Permission.MANAGE_SYSTEM)
+def invalidate_realtime_cache():
+    """
+    Manually invalidate dashboard cache.
+    
+    Requires: MANAGE_SYSTEM permission (admin only)
+    
+    Forces immediate refresh of cached metrics and charts.
+    Useful after system updates or data modifications.
+    
+    Request Body (optional):
+        {
+            "category": "metrics"  # Specific category to invalidate
+        }
+    
+    Response (200):
+        {
+            "success": true,
+            "invalidated": "metrics",
+            "message": "Cache invalidated successfully"
+        }
+    """
+    try:
+        data = request.get_json() or {}
+        category = data.get('category')
+        
+        if category:
+            RealtimeService.invalidate_metrics() if category == 'metrics' else None
+        else:
+            RealtimeService.invalidate_metrics()
+        
+        return jsonify({
+            'success': True,
+            'invalidated': category or 'all',
+            'message': 'Cache invalidated successfully'
+        }), 200
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': 'Failed to invalidate cache'
+        }), 500
+
+
+@dashboard_bp.route('/realtime/cache-stats', methods=['GET'])
+@login_required
+@permission_required(Permission.MANAGE_SYSTEM)
+def get_cache_stats():
+    """
+    Get detailed cache statistics and analytics.
+    
+    Requires: MANAGE_SYSTEM permission (admin only)
+    
+    Returns comprehensive cache performance data for monitoring
+    and optimization.
+    
+    Response (200):
+        {
+            "hits": 1247,
+            "misses": 218,
+            "hit_rate": 0.851,
+            "entries": 12,
+            "sets": 1450,
+            "invalidations": 35,
+            "size_mb": 0.45,
+            "efficiency": "Good"
+        }
+    """
+    try:
+        stats = CacheManager.get_stats()
+        info = CacheManager.get_cache_info()
+        
+        efficiency = 'Excellent' if stats['hit_rate'] > 0.85 else 'Good' if stats['hit_rate'] > 0.7 else 'Fair'
+        
+        return jsonify({
+            'hits': stats['hits'],
+            'misses': stats['misses'],
+            'hit_rate': stats['hit_rate'],
+            'entries': stats['entries'],
+            'sets': stats['sets'],
+            'invalidations': stats['invalidations'],
+            'size_mb': info['size_mb'],
+            'efficiency': efficiency
+        }), 200
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': 'Failed to retrieve cache statistics'
         }), 500

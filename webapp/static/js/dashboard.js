@@ -9,15 +9,59 @@ let revenueChart = null;
 let patientChart = null;
 let departmentChart = null;
 
+// Real-time update configuration
+let refreshConfig = {};
+let refreshIntervalId = null;
+let lastUpdateTime = null;
+
 // Initialize dashboard on page load
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Dashboard initializing...');
+    loadRefreshConfig();
     loadDashboardData();
     setupFilterListeners();
-    
-    // Auto-refresh every 30 seconds
-    setInterval(loadDashboardData, 30000);
+    setupRealtimeUpdates();
 });
+
+/**
+ * Load refresh configuration for real-time updates
+ */
+function loadRefreshConfig() {
+    fetch('/api/dashboard/realtime/config')
+        .then(response => response.json())
+        .then(data => {
+            refreshConfig = data;
+            console.log('Refresh config loaded:', data);
+        })
+        .catch(error => {
+            console.warn('Could not load refresh config, using defaults:', error);
+            refreshConfig = {
+                refresh_interval_ms: 10000,
+                caching_enabled: true
+            };
+        });
+}
+
+/**
+ * Setup real-time updates with auto-refresh
+ */
+function setupRealtimeUpdates() {
+    const interval = (refreshConfig.refresh_interval_ms || 10000);
+    
+    // Clear any existing interval
+    if (refreshIntervalId) {
+        clearInterval(refreshIntervalId);
+    }
+    
+    // Setup auto-refresh
+    refreshIntervalId = setInterval(function() {
+        console.log('Auto-refreshing dashboard data...');
+        lastUpdateTime = new Date();
+        loadDashboardData();
+    }, interval);
+    
+    console.log(`Real-time updates enabled (interval: ${interval}ms)`);
+}
 
 /**
  * Load all dashboard data
@@ -28,13 +72,32 @@ function loadDashboardData() {
     // Load KPIs and charts in parallel
     Promise.all([
         loadKPIs(),
-        loadCharts()
+        loadCharts(),
+        updateLastUpdateTime()
     ]).then(() => {
         console.log('Dashboard data loaded successfully');
     }).catch(error => {
         console.error('Error loading dashboard data:', error);
         showErrorMessage('Failed to load dashboard data');
     });
+}
+
+/**
+ * Update last update timestamp
+ */
+function updateLastUpdateTime() {
+    return fetch('/api/dashboard/realtime/status')
+        .then(response => response.json())
+        .then(data => {
+            const statusEl = document.getElementById('last-update-time');
+            if (statusEl) {
+                const updateTime = new Date(data.last_update);
+                statusEl.textContent = `Last updated: ${updateTime.toLocaleTimeString()}`;
+            }
+        })
+        .catch(error => {
+            console.warn('Could not update status:', error);
+        });
 }
 
 /**
