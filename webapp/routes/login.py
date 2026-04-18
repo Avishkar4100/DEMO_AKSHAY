@@ -10,7 +10,7 @@ Security Features:
 """
 
 from flask import Blueprint, request, jsonify, render_template, redirect, url_for, session, make_response
-from flask_login import current_user, login_required
+from flask_login import current_user, login_required, logout_user
 from ..security import csrf
 from ..login import LoginSession, LoginForm, login_required as custom_login_required
 from ..auth import AuthenticationError

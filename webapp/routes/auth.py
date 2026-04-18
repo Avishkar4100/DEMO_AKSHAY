@@ -3,8 +3,8 @@ Authentication Routes - HOS-3 Backend Authentication
 Provides API endpoints for login, registration, and credential validation
 """
 
-from flask import Blueprint, request, jsonify
-from flask_login import login_user, current_user
+from flask import Blueprint, request, jsonify, session
+from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.exceptions import BadRequest
 from ..auth import AuthenticationService, AuthenticationError, PasswordValidator, EmailValidator
 
@@ -197,6 +197,47 @@ def validate_credentials():
     except Exception as e:
         return jsonify({'valid': False}), 500
 
+
+@auth_bp.route('/logout', methods=['POST', 'GET'])
+@login_required
+def logout():
+    """
+    Logout endpoint - Terminate user session (HOS-13: Logout Route).
+    
+    Invalidates the user's session and clears authentication data.
+    
+    Response (Success 200):
+        {
+            "success": true,
+            "message": "Successfully logged out"
+        }
+    
+    Response (Error 401):
+        {
+            "success": false,
+            "error": "Not authenticated"
+        }
+    """
+    try:
+        # Get username before logout for logging
+        username = current_user.username if current_user else "unknown"
+        
+        # Logout user from Flask-Login
+        logout_user()
+        
+        # Clear session data
+        session.clear()
+        
+        return jsonify({
+            'success': True,
+            'message': 'Successfully logged out'
+        }), 200
+    
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': 'Logout failed'
+        }), 500
 
 @auth_bp.route('/validate-password', methods=['POST'])
 def validate_password():

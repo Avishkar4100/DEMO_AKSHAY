@@ -22,7 +22,7 @@ Tasks Implemented:
 """
 
 import os
-from flask import Flask
+from flask import Flask, redirect, url_for
 from flask_login import LoginManager, login_required
 from .config import config
 from .models import db, User
@@ -82,6 +82,24 @@ def create_app(config_name=None):
     def health_check():
         """Simple health check endpoint"""
         return {'status': 'OK', 'message': 'HMS API is running'}, 200
+    
+    # Logout route (HOS-13)
+    @app.route('/logout', methods=['GET', 'POST'])
+    def logout():
+        """
+        Logout endpoint - Terminate user session.
+        Handles requests from both GET and POST methods.
+        Redirects to login page after logout.
+        """
+        from flask_login import logout_user
+        from flask import session
+        
+        try:
+            logout_user()
+            session.clear()
+            return redirect(url_for('login.login_page'))
+        except Exception:
+            return redirect(url_for('login.login_page'))
     
     # Dashboard placeholder route
     @app.route('/dashboard')
