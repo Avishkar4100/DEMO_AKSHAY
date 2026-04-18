@@ -167,6 +167,8 @@ class RolePermissionMap:
             Permission.CREATE_MEDICAL_RECORD,
             Permission.EDIT_MEDICAL_RECORD,
             
+            Permission.VIEW_PRESCRIPTIONS,
+            
             Permission.VIEW_DASHBOARD,
         },
     }
