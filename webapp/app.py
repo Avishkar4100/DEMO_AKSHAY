@@ -23,7 +23,7 @@ Tasks Implemented:
 
 import os
 from flask import Flask
-from flask_login import LoginManager
+from flask_login import LoginManager, login_required
 from .config import config
 from .models import db, User
 from .security import csrf, SecurityHeaders
@@ -85,15 +85,10 @@ def create_app(config_name=None):
     
     # Dashboard placeholder route
     @app.route('/dashboard')
+    @login_required
     def dashboard():
         """Dashboard placeholder (HOS-4 and beyond)"""
-        from flask import redirect, url_for
         from flask_login import current_user
-        
-        # Placeholder: redirect back to login if not authenticated
-        # In the future, this will show the actual dashboard
-        if not current_user.is_authenticated:
-            return redirect(url_for('login.login_page'))
         
         return {
             'message': 'Dashboard (Coming soon - HOS-4+)',
