@@ -1,0 +1,154 @@
+{% macro render_input(field_id, label, type="text", placeholder="", required=false, icon=none, error=none, value="") %}
+<div class="mb-4">
+    <label for="{{ field_id }}" class="block text-sm font-medium text-gray-700 mb-1.5">
+        {{ label }}
+        {% if required %}<span class="text-red-500">*</span>{% endif %}
+    </label>
+    <div class="relative">
+        {% if icon %}
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+            <i class="fas fa-{{ icon }}"></i>
+        </div>
+        {% endif %}
+        <input
+            type="{{ type }}"
+            id="{{ field_id }}"
+            name="{{ field_id }}"
+            placeholder="{{ placeholder }}"
+            value="{{ value }}"
+            {% if required %}required{% endif %}
+            class="w-full px-4 py-2.5 {% if icon %}pl-10{% endif %} border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 {% if error %}border-red-400 focus:ring-red-500 focus:border-red-500{% endif %}"
+            {% if required %}aria-required="true"{% endif %}
+            {% if error %}aria-invalid="true"{% endif %}
+            aria-describedby="{{ field_id }}Error"
+        >
+    </div>
+    {% if error %}
+    <p class="mt-1.5 text-xs text-red-600 flex items-center gap-1" id="{{ field_id }}Error">
+        <i class="fas fa-exclamation-circle"></i> {{ error }}
+    </p>
+    {% endif %}
+</div>
+{% endmacro %}
+
+{% macro render_select(field_id, label, options, selected="", required=false, icon=none) %}
+<div class="mb-4">
+    <label for="{{ field_id }}" class="block text-sm font-medium text-gray-700 mb-1.5">
+        {{ label }}
+        {% if required %}<span class="text-red-500">*</span>{% endif %}
+    </label>
+    <div class="relative">
+        {% if icon %}
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400 z-10">
+            <i class="fas fa-{{ icon }}"></i>
+        </div>
+        {% endif %}
+        <select
+            id="{{ field_id }}"
+            name="{{ field_id }}"
+            {% if required %}required{% endif %}
+            class="w-full px-4 py-2.5 {% if icon %}pl-10{% endif %} border border-gray-300 rounded-lg text-sm bg-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 appearance-none"
+        >
+            <option value="">Select {{ label }}</option>
+            {% for value, label_text in options %}
+            <option value="{{ value }}" {% if selected == value %}selected{% endif %}>{{ label_text }}</option>
+            {% endfor %}
+        </select>
+        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-gray-400">
+            <i class="fas fa-chevron-down text-xs"></i>
+        </div>
+    </div>
+</div>
+{% endmacro %}
+
+{% macro render_checkbox(field_id, label, checked=false, disabled=false) %}
+<div class="flex items-center mb-4">
+    <input
+        type="checkbox"
+        id="{{ field_id }}"
+        name="{{ field_id }}"
+        {% if checked %}checked{% endif %}
+        {% if disabled %}disabled{% endif %}
+        class="w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500 cursor-pointer"
+    >
+    <label for="{{ field_id }}" class="ml-2 text-sm text-gray-600 cursor-pointer select-none">
+        {{ label }}
+    </label>
+</div>
+{% endmacro %}
+
+{% macro render_button(text, type="submit", variant="primary", icon=none, loading=false, extra_class="") %}
+{% set variants = {
+    'primary': 'bg-gradient-to-r from-primary-600 to-secondary-600 text-white hover:from-primary-700 hover:to-secondary-700 shadow-md hover:shadow-lg',
+    'secondary': 'bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-300',
+    'danger': 'bg-red-600 text-white hover:bg-red-700 shadow-md',
+    'success': 'bg-emerald-600 text-white hover:bg-emerald-700 shadow-md',
+    'ghost': 'bg-transparent text-gray-600 hover:bg-gray-100'
+} %}
+<button
+    type="{{ type }}"
+    class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-60 disabled:cursor-not-allowed {{ variants.get(variant, variants['primary']) }} {{ extra_class }}"
+    {% if loading %}disabled{% endif %}
+>
+    {% if loading %}
+    <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+    </svg>
+    {% elif icon %}
+    <i class="fas fa-{{ icon }}"></i>
+    {% endif %}
+    {{ text }}
+</button>
+{% endmacro %}
+
+{% macro render_alert(message, type="info", dismissible=true) %}
+{% set alert_styles = {
+    'info': 'bg-blue-50 border-blue-200 text-blue-700',
+    'success': 'bg-emerald-50 border-emerald-200 text-emerald-700',
+    'warning': 'bg-amber-50 border-amber-200 text-amber-700',
+    'error': 'bg-red-50 border-red-200 text-red-700'
+} %}
+{% set alert_icons = {
+    'info': 'fa-info-circle',
+    'success': 'fa-check-circle',
+    'warning': 'fa-exclamation-triangle',
+    'error': 'fa-times-circle'
+} %}
+<div class="flex items-start gap-3 p-4 mb-4 rounded-lg border {{ alert_styles.get(type, alert_styles['info']) }} fade-in" role="alert">
+    <i class="fas {{ alert_icons.get(type, alert_icons['info']) }} mt-0.5"></i>
+    <p class="text-sm flex-1">{{ message }}</p>
+    {% if dismissible %}
+    <button onclick="this.parentElement.remove()" class="text-sm opacity-60 hover:opacity-100" aria-label="Dismiss">
+        <i class="fas fa-times"></i>
+    </button>
+    {% endif %}
+</div>
+{% endmacro %}
+
+{% macro render_card(title="", icon=none, class="", body_class="") %}
+<div class="bg-white rounded-xl shadow-sm border border-gray-100 {{ class }}">
+    {% if title %}
+    <div class="px-5 py-4 border-b border-gray-100 flex items-center gap-2">
+        {% if icon %}<i class="fas fa-{{ icon }} text-primary-500"></i>{% endif %}
+        <h3 class="text-sm font-semibold text-gray-800">{{ title }}</h3>
+    </div>
+    {% endif %}
+    <div class="p-5 {{ body_class }}">
+        {{ caller() }}
+    </div>
+</div>
+{% endmacro %}
+
+{% macro render_badge(text, variant="primary") %}
+{% set badge_styles = {
+    'primary': 'bg-primary-100 text-primary-700',
+    'success': 'bg-emerald-100 text-emerald-700',
+    'warning': 'bg-amber-100 text-amber-700',
+    'danger': 'bg-red-100 text-red-700',
+    'gray': 'bg-gray-100 text-gray-700'
+} %}
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ badge_styles.get(variant, badge_styles['primary']) }}">
+    {{ text }}
+</span>
+{% endmacro %}

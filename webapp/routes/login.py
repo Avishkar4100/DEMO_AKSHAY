@@ -28,7 +28,7 @@ def login_page():
     """
     # If already logged in, redirect to dashboard
     if current_user and current_user.is_authenticated:
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('dashboard_view'))
     
     return render_template('login.html', error=None)
 
