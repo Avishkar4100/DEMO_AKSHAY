@@ -1,14 +1,15 @@
 import { useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate, Outlet } from 'react-router-dom';
 
 const navItems = [
   { path: '/dashboard', label: 'Dashboard', icon: '📊' },
   { path: '/patients', label: 'Patients', icon: '👥' },
   { path: '/appointments', label: 'Appointments', icon: '📅' },
   { path: '/billing', label: 'Billing', icon: '💰' },
+  { path: '/profile', label: 'Profile', icon: '👤' },
 ];
 
-export default function MainLayout({ children }) {
+export default function MainLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
@@ -83,7 +84,7 @@ export default function MainLayout({ children }) {
 
         {/* Page content */}
         <main className="flex-1 p-4 lg:p-8 overflow-auto">
-          {children}
+          <Outlet />
         </main>
       </div>
     </div>
