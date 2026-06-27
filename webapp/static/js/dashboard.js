@@ -17,17 +17,20 @@ let lastUpdateTime = null;
 // Initialize dashboard on page load
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Dashboard initializing...');
-    loadRefreshConfig();
-    loadDashboardData();
-    setupFilterListeners();
-    setupRealtimeUpdates();
+    // Load config first, then initialize everything else
+    loadRefreshConfig().then(function() {
+        loadDashboardData();
+        setupFilterListeners();
+        setupRealtimeUpdates();
+    });
 });
 
 /**
  * Load refresh configuration for real-time updates
+ * Returns a promise that resolves when config is loaded
  */
 function loadRefreshConfig() {
-    fetch('/api/dashboard/realtime/config')
+    return fetch('/api/dashboard/realtime/config')
         .then(response => response.json())
         .then(data => {
             refreshConfig = data;
@@ -44,6 +47,7 @@ function loadRefreshConfig() {
 
 /**
  * Setup real-time updates with auto-refresh
+ * Uses refreshConfig loaded by loadRefreshConfig()
  */
 function setupRealtimeUpdates() {
     const interval = (refreshConfig.refresh_interval_ms || 10000);
@@ -61,6 +65,14 @@ function setupRealtimeUpdates() {
     }, interval);
     
     console.log(`Real-time updates enabled (interval: ${interval}ms)`);
+    
+    // Update status indicator
+    const statusEl = document.getElementById('realtime-status');
+    if (statusEl) {
+        const strategy = refreshConfig.update_strategy || 'polling';
+        statusEl.textContent = `Live (${strategy}, ${interval/1000}s)`;
+        statusEl.className = 'status-badge status-active';
+    }
 }
 
 /**
@@ -83,16 +95,24 @@ function loadDashboardData() {
 }
 
 /**
- * Update last update timestamp
+ * Update last update timestamp and cache info
  */
 function updateLastUpdateTime() {
     return fetch('/api/dashboard/realtime/status')
         .then(response => response.json())
         .then(data => {
-            const statusEl = document.getElementById('last-update-time');
-            if (statusEl) {
+            const timeEl = document.getElementById('last-update-time');
+            if (timeEl) {
                 const updateTime = new Date(data.last_update);
-                statusEl.textContent = `Last updated: ${updateTime.toLocaleTimeString()}`;
+                timeEl.innerHTML = `<i class="far fa-clock"></i> Last updated: ${updateTime.toLocaleTimeString()}`;
+            }
+
+            // Update cache info
+            const cacheInfo = document.getElementById('cache-info');
+            const cacheRate = document.getElementById('cache-hit-rate');
+            if (cacheInfo && cacheRate && data.cache_hit_rate !== undefined) {
+                cacheInfo.style.display = 'inline';
+                cacheRate.textContent = `Cache: ${(data.cache_hit_rate * 100).toFixed(0)}% hit rate`;
             }
         })
         .catch(error => {

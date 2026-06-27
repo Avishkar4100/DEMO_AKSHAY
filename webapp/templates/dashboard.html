@@ -414,6 +414,56 @@
             font-size: 14px;
         }
 
+        /* Real-time Status Bar */
+        .realtime-bar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 8px;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .realtime-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-badge.status-active {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-badge.status-connecting {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .update-time {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .cache-info {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
         /* Animations */
         @keyframes fadeIn {
             from {
@@ -481,6 +531,21 @@
             <button class="btn-filter" onclick="applyFilters()">
                 <i class="fas fa-filter"></i> Apply Filters
             </button>
+        </div>
+
+        <!-- Real-time Status Bar -->
+        <div class="realtime-bar">
+            <div class="realtime-info">
+                <span class="status-badge status-connecting" id="realtime-status">
+                    <i class="fas fa-sync-alt fa-spin"></i> Connecting...
+                </span>
+                <span class="update-time" id="last-update-time">
+                    <i class="far fa-clock"></i> Loading...
+                </span>
+                <span class="cache-info" id="cache-info" style="display:none;">
+                    <i class="fas fa-database"></i> <span id="cache-hit-rate"></span>
+                </span>
+            </div>
         </div>
 
         <!-- KPI Cards Section -->

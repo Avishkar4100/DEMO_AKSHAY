@@ -81,7 +81,7 @@ class SecurityHeaders:
         
         # Content Security Policy
         response.headers['Content-Security-Policy'] = \
-            "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'"
+            "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com"
         
         return response
 

@@ -22,7 +22,7 @@ Tasks Implemented:
 """
 
 import os
-from flask import Flask, redirect, url_for
+from flask import Flask, redirect, url_for, render_template
 from flask_login import LoginManager, login_required
 from .config import config
 from .models import db, User
@@ -85,6 +85,37 @@ def create_app(config_name=None):
         """Simple health check endpoint"""
         return {'status': 'OK', 'message': 'HMS API is running'}, 200
     
+    # Home route - redirect based on authentication status
+    @app.route('/')
+    def home():
+        """
+        Home page - redirects to dashboard if logged in, login page otherwise
+        """
+        from flask_login import current_user
+        if current_user and current_user.is_authenticated:
+            return redirect(url_for('dashboard_view'))
+        # Redirect to login
+        return redirect(url_for('login.login_page'))
+    
+    # Dashboard page route (HOS-17)
+    @app.route('/dashboard')
+    @login_required
+    def dashboard_view():
+        """Display dashboard page"""
+        return render_template('dashboard.html')
+    
+    # Favicon endpoint to prevent 404 errors
+    @app.route('/favicon.ico')
+    def favicon():
+        """Return favicon (prevents 404 errors from browser requests)"""
+        from flask import send_from_directory
+        import os
+        favicon_path = os.path.join(app.root_path, 'static', 'favicon.ico')
+        if os.path.exists(favicon_path):
+            return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico')
+        # Return a simple 204 No Content response if favicon doesn't exist
+        return '', 204
+    
     # Logout route (HOS-13)
     @app.route('/logout', methods=['GET', 'POST'])
     def logout():
@@ -102,18 +133,6 @@ def create_app(config_name=None):
             return redirect(url_for('login.login_page'))
         except Exception:
             return redirect(url_for('login.login_page'))
-    
-    # Dashboard placeholder route
-    @app.route('/dashboard')
-    @login_required
-    def dashboard():
-        """Dashboard placeholder (HOS-4 and beyond)"""
-        from flask_login import current_user
-        
-        return {
-            'message': 'Dashboard (Coming soon - HOS-4+)',
-            'user': current_user.username
-        }, 200
     
     return app
 
