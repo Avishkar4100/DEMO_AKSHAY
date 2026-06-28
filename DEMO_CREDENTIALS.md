@@ -343,7 +343,7 @@ cd frontend
 # Install dependencies
 npm install
 
-# Start dev server7b19c4f HOS-83: Styling with Tailwind CSS - Dark Mode Support, Responsive Design & Consistent UI
+# Start dev server
 npm run dev
 ```
 
