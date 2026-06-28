@@ -1,7 +1,15 @@
 import axios from 'axios';
 
+// API client for /api/* endpoints (dashboard, auth)
 const api = axios.create({
   baseURL: '/api',
+  headers: { 'Content-Type': 'application/json' },
+  withCredentials: true,
+});
+
+// Plain client for non-/api endpoints (login form, logout)
+const plain = axios.create({
+  baseURL: '',
   headers: { 'Content-Type': 'application/json' },
   withCredentials: true,
 });
@@ -12,9 +20,9 @@ export const authAPI = {
   register: (data) => api.post('/auth/register', data),
 };
 
-// Login form endpoint
+// Login form endpoint (uses plain client — no /api prefix)
 export const loginAPI = {
-  form: (data) => api.post('/login/api', data),
+  form: (data) => plain.post('/login/api', data),
 };
 
 // Dashboard endpoints

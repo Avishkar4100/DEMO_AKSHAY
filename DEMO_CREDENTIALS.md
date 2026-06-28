@@ -307,6 +307,73 @@ HMS_ENV=production python seed_demo_users.py
 
 ---
 
-**Last Updated**: April 16, 2026  
+## How to Run the Project
+
+### Prerequisites
+
+- **Python 3.10+** with `pip`
+- **Node.js 18+** with `npm`
+
+### 1. Backend (Flask API)
+
+```bash
+# Activate virtual environment (Windows)
+.venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Seed demo users (first time only)
+python seed_demo_users.py
+
+# Start Flask server
+python -m flask --app webapp.app run --host 127.0.0.1 --port 5000
+```
+
+**Available at**: `http://127.0.0.1:5000`
+
+### 2. Frontend (React + Vite)
+
+Open a **new terminal** and run:
+
+```bash
+# Navigate to frontend directory
+cd frontend
+
+# Install dependencies
+npm install
+
+# Start dev server
+npm run dev
+```
+
+**Available at**: `http://127.0.0.1:5173`
+
+### Accessing the Application
+
+| URL | What it serves | Notes |
+|-----|---------------|-------|
+| `http://127.0.0.1:5173` | **Frontend** (React UI) | Full dashboard experience |
+| `http://127.0.0.1:5000` | **Backend** (Flask API) | Login at `/login/`, API at `/api/` |
+
+The frontend automatically proxies API requests (`/api`, `/login`, `/logout`) to the backend.
+
+### Quick Start (Both Servers)
+
+**Terminal 1 — Backend:**
+```bash
+.venv\Scripts\activate && python -m flask --app webapp.app run --host 127.0.0.1 --port 5000
+```
+
+**Terminal 2 — Frontend:**
+```bash
+cd frontend && npm run dev
+```
+
+Then open **http://127.0.0.1:5173** in your browser.
+
+---
+
+**Last Updated**: June 28, 2026  
 **HOS Task**: HOS-9 Demo Credentials  
 **Status**: Complete
