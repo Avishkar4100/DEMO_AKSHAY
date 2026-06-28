@@ -5,6 +5,7 @@ import PatientsPage from './pages/PatientsPage'
 import AppointmentsPage from './pages/AppointmentsPage'
 import BillingPage from './pages/BillingPage'
 import ProfilePage from './pages/ProfilePage'
+import SettingsPage from './pages/SettingsPage'
 import MainLayout from './layouts/MainLayout'
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
         <Route path="appointments" element={<AppointmentsPage />} />
         <Route path="billing" element={<BillingPage />} />
         <Route path="profile" element={<ProfilePage />} />
+        <Route path="settings" element={<SettingsPage />} />
       </Route>
       <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
