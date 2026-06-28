@@ -5,16 +5,16 @@
  */
 export default function FormCard({ title, icon, children, className = '', actions }) {
   return (
-    <div className={`bg-white rounded-xl shadow-sm border border-gray-200 ${className}`}>
+    <div className={`bg-white dark:bg-slate-800 rounded-xl shadow-sm dark:shadow-[0_1px_3px_rgba(0,0,0,.3)] border border-gray-200 dark:border-slate-700 ${className}`}>
       {title && (
-        <div className="flex items-center gap-2 px-5 py-4 border-b border-gray-100">
+        <div className="flex items-center gap-2 px-5 py-4 border-b border-gray-100 dark:border-slate-700">
           {icon && <i className={`fas ${icon} text-indigo-500`}></i>}
-          <h3 className="font-semibold text-gray-900 text-sm">{title}</h3>
+          <h3 className="font-semibold text-gray-900 dark:text-white text-sm">{title}</h3>
         </div>
       )}
       <div className="p-5">{children}</div>
       {actions && (
-        <div className="flex items-center justify-end gap-3 px-5 py-4 border-t border-gray-100 bg-gray-50/50 rounded-b-xl">
+        <div className="flex items-center justify-end gap-3 px-5 py-4 border-t border-gray-100 dark:border-slate-700 bg-gray-50/50 dark:bg-slate-700/30 rounded-b-xl">
           {actions}
         </div>
       )}

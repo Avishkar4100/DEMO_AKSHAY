@@ -41,11 +41,11 @@ export default function FormTextarea({
   const textareaClasses = [
     'w-full px-4 py-3 border-2 rounded-lg text-sm outline-none transition-all duration-200 resize-y',
     hasError
-      ? 'border-red-300 bg-red-50 focus:ring-red-500 focus:border-red-500'
+      ? 'border-red-300 dark:border-red-600 bg-red-50 dark:bg-red-900/20 focus:ring-red-500 focus:border-red-500'
       : isValid
-        ? 'border-green-300 bg-green-50 focus:ring-green-500 focus:border-green-500'
-        : 'border-gray-300 focus:ring-indigo-500 focus:border-indigo-500',
-    disabled ? 'bg-gray-100 cursor-not-allowed' : '',
+        ? 'border-green-300 dark:border-green-600 bg-green-50 dark:bg-green-900/20 focus:ring-green-500 focus:border-green-500'
+        : 'border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-slate-100 focus:ring-indigo-500 focus:border-indigo-500',
+    disabled ? 'bg-gray-100 dark:bg-slate-700 cursor-not-allowed' : '',
     'focus:ring-2',
     className,
   ].filter(Boolean).join(' ');
@@ -53,7 +53,7 @@ export default function FormTextarea({
   return (
     <div>
       {label && (
-        <label htmlFor={fieldId} className="block text-sm font-medium text-gray-700 mb-1.5">
+        <label htmlFor={fieldId} className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1.5">
           {icon && <i className={`fas ${icon} text-indigo-400 mr-1.5`}></i>}
           {label}
           {required && <span className="text-red-500 ml-0.5">*</span>}

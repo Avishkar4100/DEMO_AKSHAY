@@ -26,15 +26,15 @@ export default function Button({
 
   const variants = {
     primary:
-      'bg-indigo-600 text-white hover:bg-indigo-700 focus:ring-indigo-500 shadow-sm hover:shadow disabled:bg-indigo-300',
+      'bg-indigo-600 text-white hover:bg-indigo-700 focus:ring-indigo-500 shadow-sm hover:shadow disabled:bg-indigo-400 dark:disabled:bg-indigo-800',
     secondary:
-      'bg-gray-100 text-gray-700 hover:bg-gray-200 focus:ring-gray-400 disabled:bg-gray-50 disabled:text-gray-300',
+      'bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-slate-200 hover:bg-gray-200 dark:hover:bg-slate-600 focus:ring-gray-400 disabled:bg-gray-50 dark:disabled:bg-slate-800 disabled:text-gray-300 dark:disabled:text-slate-500',
     danger:
-      'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500 shadow-sm disabled:bg-red-300',
+      'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500 shadow-sm disabled:bg-red-300 dark:disabled:bg-red-800',
     ghost:
-      'bg-transparent text-gray-600 hover:bg-gray-100 hover:text-gray-900 focus:ring-gray-400 disabled:text-gray-300',
+      'bg-transparent text-gray-600 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-700 hover:text-gray-900 dark:hover:text-slate-100 focus:ring-gray-400 disabled:text-gray-300 dark:disabled:text-slate-600',
     outline:
-      'bg-transparent text-indigo-600 border-2 border-indigo-600 hover:bg-indigo-50 focus:ring-indigo-500 disabled:border-gray-300 disabled:text-gray-300',
+      'bg-transparent text-indigo-600 dark:text-indigo-400 border-2 border-indigo-600 dark:border-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 focus:ring-indigo-500 disabled:border-gray-300 dark:disabled:border-slate-600 disabled:text-gray-300 dark:disabled:text-slate-500',
   };
 
   const sizes = {

@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { loginAPI } from '../services/api';
-import { FormField } from '../components';
+import { FormField, FormCheckbox, FormAlert } from '../components';
 import Button from '../components/Button';
 import { validators, validateField } from '../utils/validation';
 
@@ -66,9 +66,7 @@ export default function LoginPage() {
         </div>
 
         {serverError && (
-          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600 flex items-center gap-2">
-            <i className="fas fa-exclamation-triangle"></i> {serverError}
-          </div>
+          <FormAlert variant="error" message={serverError} dismissible onDismiss={() => setServerError('')} />
         )}
 
         <form onSubmit={handleSubmit} className="space-y-5" noValidate>
@@ -102,15 +100,11 @@ export default function LoginPage() {
             rules={[validators.required, validators.minLength(6)]}
           />
 
-          <div className="flex items-center gap-2">
-            <input
-              type="checkbox" id="remember"
-              checked={form.remember_me}
-              onChange={(e) => setForm((prev) => ({ ...prev, remember_me: e.target.checked }))}
-              className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-            />
-            <label htmlFor="remember" className="text-sm text-gray-600">Remember me</label>
-          </div>
+          <FormCheckbox
+            label="Remember me on this device"
+            checked={form.remember_me}
+            onChange={(val) => setForm((prev) => ({ ...prev, remember_me: val }))}
+          />
 
           <Button type="submit" loading={loading} icon="fa-sign-in-alt" fullWidth>
             Sign in
