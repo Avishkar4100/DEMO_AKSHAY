@@ -375,6 +375,9 @@ button, a, input, select, textarea, [role="button"], [tabindex] {
 .grid-cols-3  { grid-template-columns: repeat(3, 1fr); }
 .grid-cols-4  { grid-template-columns: repeat(4, 1fr); }
 
+.-translate-x-full { transform: translateX(-100%); }
+.translate-x-0 { transform: translateX(0); }
+
 /* Responsive grid helpers */
 @media (min-width: 640px) {
   .sm\:grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
@@ -412,6 +415,7 @@ button, a, input, select, textarea, [role="button"], [tabindex] {
   .lg\:relative { position: relative; }
   .lg\:z-auto { z-index: auto; }
   .lg\:translate-x-0 { transform: translateX(0); }
+  .lg\:sidebar-visible { transform: translateX(0) !important; }
 }
 
 /* ── Position ── */
@@ -498,9 +502,7 @@ button, a, input, select, textarea, [role="button"], [tabindex] {
 .-top-24 { top: -6rem; }
 .-bottom-24 { bottom: -6rem; }
 .-left-24 { left: -6rem; }
-.-translate-x-full { transform: translateX(-100%); }
 .-translate-y-1\/2 { transform: translateY(-50%); }
-.translate-x-0 { transform: translateX(0); }
 
 /* ── Padding ── */
 .p-1   { padding: var(--space-1); }
