@@ -22,11 +22,13 @@ Tasks Implemented:
 """
 
 import os
-from flask import Flask, redirect, url_for, render_template
+from flask import Flask, redirect, url_for
 from flask_login import LoginManager, login_required
 from .config import config
 from .models import db, User
 from .security import csrf, SecurityHeaders
+
+FRONTEND_URL = 'http://127.0.0.1:5173'
 
 
 def create_app(config_name=None):
@@ -89,20 +91,19 @@ def create_app(config_name=None):
     @app.route('/')
     def home():
         """
-        Home page - redirects to dashboard if logged in, login page otherwise
+        Home page - redirects to React frontend
         """
         from flask_login import current_user
         if current_user and current_user.is_authenticated:
-            return redirect(url_for('dashboard_view'))
-        # Redirect to login
-        return redirect(url_for('login.login_page'))
+            return redirect(f'{FRONTEND_URL}/dashboard')
+        return redirect(f'{FRONTEND_URL}/login')
     
     # Dashboard page route (HOS-17)
     @app.route('/dashboard')
     @login_required
     def dashboard_view():
-        """Display dashboard page"""
-        return render_template('dashboard.html')
+        """Redirect to React frontend dashboard"""
+        return redirect(f'{FRONTEND_URL}/dashboard')
     
     # Favicon endpoint to prevent 404 errors
     @app.route('/favicon.ico')
@@ -121,18 +122,16 @@ def create_app(config_name=None):
     def logout():
         """
         Logout endpoint - Terminate user session.
-        Handles requests from both GET and POST methods.
-        Redirects to login page after logout.
         """
         from flask_login import logout_user
-        from flask import session
+        from flask import session, jsonify
         
         try:
             logout_user()
             session.clear()
-            return redirect(url_for('login.login_page'))
+            return jsonify({'success': True, 'message': 'Logged out successfully'}), 200
         except Exception:
-            return redirect(url_for('login.login_page'))
+            return jsonify({'success': True, 'message': 'Logged out'}), 200
     
     return app
 

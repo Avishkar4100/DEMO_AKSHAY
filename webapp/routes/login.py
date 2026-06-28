@@ -9,11 +9,13 @@ Security Features:
 - Input sanitization
 """
 
-from flask import Blueprint, request, jsonify, render_template, redirect, url_for, session, make_response
+from flask import Blueprint, request, jsonify, redirect, url_for, session, make_response
 from flask_login import current_user, login_required, logout_user
 from ..security import csrf
 from ..login import LoginSession, LoginForm, login_required as custom_login_required
 from ..auth import AuthenticationError
+
+FRONTEND_URL = 'http://127.0.0.1:5173'
 
 login_bp = Blueprint('login', __name__, url_prefix='/login')
 
@@ -21,16 +23,13 @@ login_bp = Blueprint('login', __name__, url_prefix='/login')
 @login_bp.route('/', methods=['GET'])
 def login_page():
     """
-    Display login page.
-    
-    Returns:
-        HTML login page template
+    Redirect to React frontend login page.
     """
     # If already logged in, redirect to dashboard
     if current_user and current_user.is_authenticated:
-        return redirect(url_for('dashboard_view'))
+        return redirect(f'{FRONTEND_URL}/dashboard')
     
-    return render_template('login.html', error=None)
+    return redirect(f'{FRONTEND_URL}/login')
 
 
 @login_bp.route('/api', methods=['POST'])
@@ -132,10 +131,10 @@ def login_form():
         # Validate form
         is_valid, error = LoginForm.validate_login_form(form_data)
         if not is_valid:
-            return render_template(
-                'login.html',
-                error=error
-            ), 400
+            return jsonify({
+                'success': False,
+                'error': error
+            }), 400
         
         # Sanitize data
         clean_data = LoginForm.sanitize_login_form(form_data)
@@ -147,24 +146,27 @@ def login_form():
             remember_me=clean_data['remember_me']
         )
         
-        # Redirect to dashboard or home (using request args or default to /dashboard)
+        # Redirect to dashboard or home
         next_page = request.args.get('next', '/dashboard')
-        return redirect(next_page)
+        return jsonify({
+            'success': True,
+            'redirect': next_page
+        }), 200
     
     except AuthenticationError as e:
-        return render_template(
-            'login.html',
-            error=str(e)
-        ), 401
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 401
     
     except Exception as e:
-        return render_template(
-            'login.html',
-            error='Login failed. Please try again.'
-        ), 500
+        return jsonify({
+            'success': False,
+            'error': 'Login failed. Please try again.'
+        }), 500
 
 
-@login_bp.route('/session', methods=['GET'])
+@login_bp.route('/session', methods=['GET']) 
 def get_session():
     """
     Get current user session information.

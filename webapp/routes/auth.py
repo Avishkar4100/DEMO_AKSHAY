@@ -391,3 +391,14 @@ def change_password():
             'success': False,
             'error': str(e)
         }), 500
+
+
+@auth_bp.route('/me', methods=['GET'])
+def get_current_user():
+    try:
+        if not current_user or not current_user.is_authenticated:
+            return jsonify({'success': False, 'error': 'User not authenticated'}), 401
+        user_data = current_user.to_dict()
+        return jsonify({'user': user_data}), 200
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500

@@ -166,8 +166,10 @@ export default function MainLayout() {
   useEffect(() => { setSidebarOpen(false); }, [location.pathname]);
 
   const handleLogout = async () => {
-    try { await fetch('/logout', { credentials: 'include' }); } catch {}
-    navigate('/login');
+    try {
+      await fetch('/logout', { method: 'POST', credentials: 'include' });
+    } catch {}
+    window.location.href = '/login';
   };
 
   const userRole = userInfo?.role ?? 'admin'; // fallback for demo

@@ -16,7 +16,7 @@ export default function LoginPage() {
   const handleBlur = (field) => {
     setTouched((prev) => ({ ...prev, [field]: true }));
     const rules = field === 'username'
-      ? [validators.required, validators.username, validators.email]
+      ? [validators.required]
       : [validators.required, validators.minLength(6)];
     setErrors((prev) => ({
       ...prev,
@@ -40,7 +40,7 @@ export default function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setTouched({ username: true, password: true });
-    const uErr = validateField(form.username, [validators.required, validators.username, validators.email], 'Username');
+    const uErr = validateField(form.username, [validators.required], 'Username');
     const pErr = validateField(form.password, [validators.required, validators.minLength(6)], 'Password');
     setErrors({ username: uErr, password: pErr });
     if (uErr || pErr) return;

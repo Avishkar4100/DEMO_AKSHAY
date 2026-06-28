@@ -6,6 +6,9 @@ import AppointmentsPage from './pages/AppointmentsPage'
 import BillingPage from './pages/BillingPage'
 import ProfilePage from './pages/ProfilePage'
 import SettingsPage from './pages/SettingsPage'
+import MedicalRecordsPage from './pages/MedicalRecordsPage'
+import PrescriptionsPage from './pages/PrescriptionsPage'
+import ReportsPage from './pages/ReportsPage'
 import MainLayout from './layouts/MainLayout'
 
 function App() {
@@ -17,7 +20,10 @@ function App() {
         <Route path="dashboard" element={<DashboardPage />} />
         <Route path="patients" element={<PatientsPage />} />
         <Route path="appointments" element={<AppointmentsPage />} />
+        <Route path="medical-records" element={<MedicalRecordsPage />} />
+        <Route path="prescriptions" element={<PrescriptionsPage />} />
         <Route path="billing" element={<BillingPage />} />
+        <Route path="reports" element={<ReportsPage />} />
         <Route path="profile" element={<ProfilePage />} />
         <Route path="settings" element={<SettingsPage />} />
       </Route>
