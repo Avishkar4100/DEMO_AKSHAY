@@ -91,17 +91,113 @@ export function validateField(value, rules, label) {
 }
 
 // ===== useFormValidation HOOK =====
+import { useState, useEffect, useCallback } from 'react';
 
-export function useFormValidation(fields) {
-  // fields: { [fieldName]: { value: any, rules: validatorFn[], label: string } }
+/**
+ * useFormValidation - Manages form state, validation, and submission
+ *
+ * @param {Object} config - { fieldName: { value, rules, label } }
+ * @returns {{ values, errors, touched, setValue, setTouched, reset, handleSubmit, isValid, validateAll }}
+ *
+ * Usage:
+ *   const { values, errors, touched, setValue, handleSubmit } = useFormValidation({
+ *     email: { value: '', rules: [validators.required, validators.email], label: 'Email' },
+ *     password: { value: '', rules: [validators.required, validators.minLength(8)], label: 'Password' },
+ *   });
+ *
+ *   <form onSubmit={handleSubmit((vals) => submitApi(vals))}> ... </form>
+ */
+export function useFormValidation(config = {}) {
+  const fieldNames = Object.keys(config);
+
+  const initialValues = {};
   const initialErrors = {};
   const initialTouched = {};
-  Object.keys(fields).forEach((key) => {
+  fieldNames.forEach((key) => {
+    initialValues[key] = config[key].value ?? '';
     initialErrors[key] = null;
     initialTouched[key] = false;
   });
 
-  // We use React useState/useCallback internally but return a simple object
-  // that components can use. For simplicity, components will call validateField directly.
-  return { validateField };
+  const [values, setValues] = useState(initialValues);
+  const [errors, setErrors] = useState(initialErrors);
+  const [touched, setTouched] = useState(initialTouched);
+
+  // Compute overall form validity
+  const isValid = fieldNames.length > 0 && fieldNames.every((key) => {
+    const val = values[key];
+    const rules = config[key].rules || [];
+    const label = config[key].label;
+    return !validateField(val, rules, label) && touched[key];
+  });
+
+  // Re-validate when values or touched change
+  useEffect(() => {
+    const newErrors = {};
+    fieldNames.forEach((key) => {
+      if (touched[key]) {
+        newErrors[key] = validateField(values[key], config[key].rules || [], config[key].label);
+      } else {
+        newErrors[key] = null;
+      }
+    });
+    setErrors(newErrors);
+  }, [values, touched, fieldNames.map((k) => config[k].rules).join(',')]);
+
+  /** Set a single field value */
+  const setValue = useCallback((name, value) => {
+    setValues((prev) => ({ ...prev, [name]: value }));
+  }, []);
+
+  /** Mark a field as touched (usually on blur) */
+  const setFieldTouched = useCallback((name) => {
+    setTouched((prev) => ({ ...prev, [name]: true }));
+  }, []);
+
+  /** Touch all fields (used on submit attempt) */
+  const touchAll = useCallback(() => {
+    const allTouched = {};
+    fieldNames.forEach((key) => { allTouched[key] = true; });
+    setTouched((prev) => ({ ...prev, ...allTouched }));
+  }, [fieldNames.join(',')]);
+
+  /** Validate all fields and return whether the form is valid */
+  const validateAll = useCallback(() => {
+    touchAll();
+    return fieldNames.every((key) => {
+      const val = values[key];
+      const rules = config[key].rules || [];
+      const label = config[key].label;
+      return !validateField(val, rules, label);
+    });
+  }, [values, fieldNames.join(','), config]);
+
+  /** Reset form to initial state */
+  const reset = useCallback(() => {
+    setValues(initialValues);
+    setErrors(initialErrors);
+    setTouched(initialTouched);
+  }, [fieldNames.join(',')]);
+
+  /** Handle form submission: validates, then calls onSubmit if valid */
+  const handleSubmit = useCallback((onSubmit) => (e) => {
+    if (e?.preventDefault) e.preventDefault();
+    if (validateAll()) {
+      onSubmit(values);
+    }
+  }, [validateAll, values]);
+
+  return {
+    values,
+    errors,
+    touched,
+    setValue,
+    setFieldTouched,
+    reset,
+    handleSubmit,
+    isValid,
+    validateAll,
+    setValues,
+    setTouched,
+  };
 }

@@ -175,25 +175,48 @@ export function ValidatedSelect({
 }
 
 /**
- * Modal wrapper component
+ * Modal - Reusable dialog with header, body, and optional footer
+ *
+ * Props:
+ *   open, onClose, title, icon, children, footer (ReactNode), size ('sm' | 'md' | 'lg')
  */
-export function Modal({ open, onClose, title, children }) {
+export function Modal({ open, onClose, title, icon, children, footer, size = 'md' }) {
   if (!open) return null;
 
+  const sizeMap = { sm: 'max-w-md', md: 'max-w-lg', lg: 'max-w-2xl' };
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="fixed inset-0 bg-black/50" onClick={onClose} />
-      <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto animate-modal-in">
-        <div className="flex items-center justify-between p-5 border-b border-gray-200">
-          <h2 className="text-lg font-bold text-gray-900">{title}</h2>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-label={title}>
+      <div className="fixed inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
+      <div className={`relative bg-white rounded-2xl shadow-2xl w-full ${sizeMap[size] || sizeMap.md} max-h-[90vh] overflow-y-auto animate-modal-in`}>
+        {/* Header */}
+        <div className="flex items-center justify-between px-5 py-4 border-b border-gray-200">
+          <div className="flex items-center gap-3">
+            {icon && (
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shrink-0">
+                <i className={`fas ${icon} text-white text-sm`}></i>
+              </div>
+            )}
+            <h2 className="text-lg font-bold text-gray-900">{title}</h2>
+          </div>
           <button
             onClick={onClose}
             className="w-8 h-8 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 flex items-center justify-center transition-colors"
+            aria-label="Close"
           >
             <i className="fas fa-times"></i>
           </button>
         </div>
+
+        {/* Body */}
         <div className="p-5">{children}</div>
+
+        {/* Footer */}
+        {footer && (
+          <div className="flex items-center justify-end gap-3 px-5 py-4 border-t border-gray-100 bg-gray-50/50 rounded-b-2xl">
+            {footer}
+          </div>
+        )}
       </div>
       <style>{`
         @keyframes modalIn {

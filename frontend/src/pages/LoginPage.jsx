@@ -1,26 +1,57 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { loginAPI } from '../services/api';
+import { FormField } from '../components';
+import Button from '../components/Button';
+import { validators, validateField } from '../utils/validation';
 
 export default function LoginPage() {
   const [form, setForm] = useState({ username: '', password: '', remember_me: false });
-  const [error, setError] = useState('');
+  const [errors, setErrors] = useState({});
+  const [touched, setTouched] = useState({});
+  const [serverError, setServerError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const handleBlur = (field) => {
+    setTouched((prev) => ({ ...prev, [field]: true }));
+    const rules = field === 'username'
+      ? [validators.required, validators.username, validators.email]
+      : [validators.required, validators.minLength(6)];
+    setErrors((prev) => ({
+      ...prev,
+      [field]: validateField(form[field], rules, field === 'username' ? 'Username' : 'Password'),
+    }));
+  };
+
+  const handleChange = (field, value) => {
+    setForm((prev) => ({ ...prev, [field]: value }));
+    if (touched[field]) {
+      const rules = field === 'username'
+        ? [validators.required, validators.username, validators.email]
+        : [validators.required, validators.minLength(6)];
+      setErrors((prev) => ({
+        ...prev,
+        [field]: validateField(value, rules, field === 'username' ? 'Username' : 'Password'),
+      }));
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setTouched({ username: true, password: true });
+    const uErr = validateField(form.username, [validators.required, validators.username, validators.email], 'Username');
+    const pErr = validateField(form.password, [validators.required, validators.minLength(6)], 'Password');
+    setErrors({ username: uErr, password: pErr });
+    if (uErr || pErr) return;
+    setServerError('');
     setLoading(true);
     try {
       const res = await loginAPI.form(form);
-      if (res.data.success) {
-        navigate('/dashboard');
-      } else {
-        setError(res.data.error || 'Login failed');
-      }
+      if (res.data.success) navigate('/dashboard');
+      else setServerError(res.data.error || 'Login failed');
     } catch (err) {
-      setError(err.response?.data?.error || 'Invalid credentials');
+      setServerError(err.response?.data?.error || 'Invalid credentials');
     } finally {
       setLoading(false);
     }
@@ -34,61 +65,56 @@ export default function LoginPage() {
           <p className="text-gray-500 dark:text-slate-400 mt-2">Hospital Management System</p>
         </div>
 
-        {error && (
-          <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg text-sm text-red-600 dark:text-red-400">
-            {error}
+        {serverError && (
+          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600 flex items-center gap-2">
+            <i className="fas fa-exclamation-triangle"></i> {serverError}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">
-              Username or Email
-            </label>
-            <input
-              type="text"
-              required
-              value={form.username}
-              onChange={(e) => setForm({ ...form, username: e.target.value })}
-              className="w-full px-4 py-3 border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-slate-100 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
-              placeholder="Enter your username"
-            />
-          </div>
+        <form onSubmit={handleSubmit} className="space-y-5" noValidate>
+          <FormField
+            label="Username or Email"
+            icon="fa-user"
+            placeholder="e.g. admin@hms.local"
+            required
+            autoComplete="username"
+            autoFocus
+            minLength={3}
+            maxLength={50}
+            value={form.username}
+            onChange={(v) => handleChange('username', v)}
+            onBlur={() => handleBlur('username')}
+            rules={[validators.required, validators.username, validators.email]}
+          />
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">
-              Password
-            </label>
-            <input
-              type="password"
-              required
-              value={form.password}
-              onChange={(e) => setForm({ ...form, password: e.target.value })}
-              className="w-full px-4 py-3 border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-slate-100 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
-              placeholder="Enter your password"
-            />
-          </div>
+          <FormField
+            label="Password"
+            icon="fa-lock"
+            type="password"
+            placeholder="Enter your password"
+            required
+            autoComplete="current-password"
+            minLength={6}
+            maxLength={128}
+            value={form.password}
+            onChange={(v) => handleChange('password', v)}
+            onBlur={() => handleBlur('password')}
+            rules={[validators.required, validators.minLength(6)]}
+          />
 
           <div className="flex items-center gap-2">
             <input
-              type="checkbox"
-              id="remember"
+              type="checkbox" id="remember"
               checked={form.remember_me}
-              onChange={(e) => setForm({ ...form, remember_me: e.target.checked })}
-              className="rounded border-gray-300 dark:border-slate-600 text-indigo-600 focus:ring-indigo-500"
+              onChange={(e) => setForm((prev) => ({ ...prev, remember_me: e.target.checked }))}
+              className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
             />
-            <label htmlFor="remember" className="text-sm text-gray-600 dark:text-slate-400">
-              Remember me
-            </label>
+            <label htmlFor="remember" className="text-sm text-gray-600">Remember me</label>
           </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {loading ? 'Signing in...' : 'Sign in'}
-          </button>
+          <Button type="submit" loading={loading} icon="fa-sign-in-alt" fullWidth>
+            Sign in
+          </Button>
         </form>
 
         <div className="mt-6 p-4 bg-gray-50 dark:bg-slate-700/50 rounded-lg">

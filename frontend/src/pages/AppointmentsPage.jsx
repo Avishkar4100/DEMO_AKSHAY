@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Button, Modal } from '../components';
 
 export default function AppointmentsPage() {
   const [appointments] = useState([
