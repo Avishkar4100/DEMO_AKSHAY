@@ -427,6 +427,8 @@ button, a, input, select, textarea, [role="button"], [tabindex] {
   .lg\:px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
   .lg\:px-8 { padding-left: 2rem; padding-right: 2rem; }
   .lg\:ml-64 { margin-left: 16rem; }
+  .lg\:ml-0 { margin-left: 0; }
+  .lg\:invisible { visibility: hidden; }
   .lg\:hidden { display: none; }
   .lg\:relative { position: relative; }
   .lg\:z-auto { z-index: auto; }

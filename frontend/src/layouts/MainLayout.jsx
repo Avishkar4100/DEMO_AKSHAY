@@ -139,7 +139,7 @@ function initials(name = '') {
 
 /* ── Component ──────────────────────────────────────────────────── */
 export default function MainLayout() {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true); // default open on desktop
   const [clock, setClock] = useState('');
   const [userInfo, setUserInfo] = useState(null);
   const location = useLocation();
@@ -199,17 +199,20 @@ export default function MainLayout() {
   })();
 
   /* ── Sidebar content ────────────────────────────────────────── */
+  const sidebarWidth = sidebarOpen ? 'w-64' : 'w-0 lg:w-0';
+  const sidebarClasses = sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0 lg:invisible';
+  
   const Sidebar = () => (
     <aside
       id="main-sidebar"
       className={`
         fixed inset-y-0 left-0 z-40 flex flex-col
-        w-64 sidebar-scroll overflow-y-auto overflow-x-hidden
-        transition-transform duration-300 ease-in-out
-        lg:relative lg:translate-x-0 lg:z-auto
+        ${sidebarOpen ? 'w-64' : 'w-64 lg:w-0'}
+        sidebar-scroll overflow-y-auto overflow-x-hidden
+        transition-all duration-300 ease-in-out
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
       `}
-      style={{ background: 'linear-gradient(165deg, #667eea 0%, #764ba2 100%)', boxShadow: '4px 0 24px rgba(102,126,234,.22)' }}
+      style={{ background: 'linear-gradient(180deg, #1e1b4b 0%, #312e81 50%, #3730a3 100%)', boxShadow: '4px 0 24px rgba(0,0,0,.2)' }}
       aria-label="Primary navigation"
     >
       {/* Brand */}
@@ -302,12 +305,12 @@ export default function MainLayout() {
 
   /* ── Render ───────────────────────────────────────────────────── */
   return (
-    <div className="flex min-h-screen bg-[#f5f6fa] dark:bg-slate-900">
+    <div className="flex min-h-screen bg-[#f5f6fa] dark:bg-slate-900 overflow-hidden">
 
       {/* Mobile backdrop */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-30 lg:hidden backdrop-blur-sm"
+          className="fixed inset-0 bg-black/60 z-30 lg:hidden backdrop-blur-sm"
           onClick={() => setSidebarOpen(false)}
           aria-hidden="true"
         />
@@ -316,14 +319,14 @@ export default function MainLayout() {
       {/* Sidebar */}
       <Sidebar />
 
-      {/* Main content wrapper */}
-      <div className="flex-1 flex flex-col min-h-screen min-w-0">
+      {/* Main content wrapper - independent scroll */}
+      <div className={`flex-1 flex flex-col min-h-screen min-w-0 transition-all duration-300 ${sidebarOpen ? 'lg:ml-64' : 'lg:ml-0'}`}>
 
         {/* ── Top bar ── */}
         <header className="sticky top-0 z-20 flex items-center justify-between h-16 px-4 lg:px-6
-                           bg-white/97 dark:bg-slate-800/97 backdrop-blur-md border-b border-gray-200 dark:border-slate-700 shadow-[0_1px_4px_rgba(0,0,0,.06)] dark:shadow-[0_1px_4px_rgba(0,0,0,.3)]">
+                           bg-white/97 dark:bg-slate-800/97 backdrop-blur-md border-b border-gray-200 dark:border-slate-700 shadow-sm">
 
-          {/* Left: hamburger + breadcrumb */}
+          {/* Left: toggle + breadcrumb */}
           <div className="flex items-center gap-3">
             <button
               id="sidebar-toggle"
@@ -331,9 +334,15 @@ export default function MainLayout() {
               aria-label="Toggle navigation"
               aria-controls="main-sidebar"
               aria-expanded={sidebarOpen}
-              className="lg:hidden w-9 h-9 flex items-center justify-center rounded-lg text-gray-500 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-700 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+              className="w-9 h-9 flex items-center justify-center rounded-lg text-gray-500 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-700 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+              title={sidebarOpen ? 'Collapse sidebar' : 'Expand sidebar'}
             >
-              {icons['menu']}
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                {sidebarOpen
+                  ? <path strokeLinecap="round" strokeLinejoin="round" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
+                  : <path strokeLinecap="round" strokeLinejoin="round" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                }
+              </svg>
             </button>
 
             {/* Breadcrumb */}
@@ -395,8 +404,10 @@ export default function MainLayout() {
         </header>
 
         {/* ── Page content ── */}
-        <main className="flex-1 p-5 lg:p-7 page-enter overflow-auto" role="main" id="page-main">
-          <Outlet />
+        <main className="flex-1 overflow-y-auto h-0" role="main" id="page-main">
+          <div className="p-5 lg:p-7 page-enter">
+            <Outlet />
+          </div>
         </main>
 
         {/* ── Footer ── */}
