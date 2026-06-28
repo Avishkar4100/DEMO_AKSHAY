@@ -27,7 +27,7 @@ export default function SettingsPage() {
         <p className="text-gray-500 dark:text-slate-400 text-sm mt-1">Manage application settings and configurations</p>
       </div>
 
-      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm dark:shadow-[0_1px_3px_rgba(0,0,0,.3)] border border-gray-200 dark:border-slate-700 p-6 space-y-8">
+      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm dark:shadow-lg border border-gray-200 dark:border-slate-700 p-6 space-y-8">
         
         {/* General Settings */}
         <section>

@@ -15,7 +15,7 @@ export default function ProfilePage() {
         <p className="text-gray-500 dark:text-slate-400 text-sm mt-1">Manage your account information and preferences</p>
       </div>
 
-      <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-[0_2px_12px_rgba(0,0,0,.04)] dark:shadow-[0_2px_12px_rgba(0,0,0,.2)] border border-gray-100 dark:border-slate-700 overflow-hidden">
+      <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm dark:shadow-lg border border-gray-100 dark:border-slate-700 overflow-hidden">
         {/* Cover & Avatar Header */}
         <div className="h-32 bg-gradient-to-r from-indigo-500 to-purple-600"></div>
         

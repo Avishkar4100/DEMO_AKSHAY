@@ -71,21 +71,21 @@ export default function DashboardPage() {
       </div>
 
       {/* Filters (Glass style) */}
-      <div className="filter-bar bg-white/80 dark:bg-slate-800/80 backdrop-blur-lg rounded-2xl shadow-[0_2px_12px_rgba(0,0,0,.04)] dark:shadow-[0_2px_12px_rgba(0,0,0,.2)] border border-gray-100/50 dark:border-slate-700/50 p-4 md:p-5 flex flex-wrap gap-3 md:gap-4 items-end">
-        <div className="filter-group flex-1 min-w-[130px] md:min-w-[150px]">
-          <label className="block text-[10px] md:text-xs font-bold text-gray-500 dark:text-slate-400 mb-1 md:mb-1.5 uppercase tracking-wide">Start Date</label>
+      <div className="bg-white dark:bg-slate-800 backdrop-blur-lg rounded-2xl shadow-sm border border-gray-200 dark:border-slate-700 p-4 md:p-5 flex flex-wrap gap-3 md:gap-4 items-end">
+        <div className="flex-1 min-w-32 md:min-w-40">
+          <label className="block text-xs font-bold text-gray-500 dark:text-slate-400 mb-1 md:mb-1.5 uppercase tracking-wide">Start Date</label>
           <input type="date" value={filters.dateFrom} onChange={(e) => setFilters({ ...filters, dateFrom: e.target.value })}
-            className="w-full px-3 md:px-4 py-2 md:py-2.5 bg-gray-50/50 dark:bg-slate-700/50 border border-gray-200 dark:border-slate-600 rounded-xl text-xs md:text-sm font-medium text-gray-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all" />
+            className="w-full px-3 md:px-4 py-2 md:py-2.5 bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-xl text-sm font-medium text-gray-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all" />
         </div>
-        <div className="filter-group flex-1 min-w-[130px] md:min-w-[150px]">
-          <label className="block text-[10px] md:text-xs font-bold text-gray-500 dark:text-slate-400 mb-1 md:mb-1.5 uppercase tracking-wide">End Date</label>
+        <div className="flex-1 min-w-32 md:min-w-40">
+          <label className="block text-xs font-bold text-gray-500 dark:text-slate-400 mb-1 md:mb-1.5 uppercase tracking-wide">End Date</label>
           <input type="date" value={filters.dateTo} onChange={(e) => setFilters({ ...filters, dateTo: e.target.value })}
-            className="w-full px-3 md:px-4 py-2 md:py-2.5 bg-gray-50/50 dark:bg-slate-700/50 border border-gray-200 dark:border-slate-600 rounded-xl text-xs md:text-sm font-medium text-gray-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all" />
+            className="w-full px-3 md:px-4 py-2 md:py-2.5 bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-xl text-sm font-medium text-gray-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all" />
         </div>
-        <div className="filter-group flex-[2] min-w-[150px] md:min-w-[200px]">
-          <label className="block text-[10px] md:text-xs font-bold text-gray-500 dark:text-slate-400 mb-1 md:mb-1.5 uppercase tracking-wide">Department</label>
+        <div className="flex-[2] min-w-40 md:min-w-48">
+          <label className="block text-xs font-bold text-gray-500 dark:text-slate-400 mb-1 md:mb-1.5 uppercase tracking-wide">Department</label>
           <select value={filters.department} onChange={(e) => setFilters({ ...filters, department: e.target.value })}
-            className="w-full px-3 md:px-4 py-2 md:py-2.5 bg-gray-50/50 dark:bg-slate-700/50 border border-gray-200 dark:border-slate-600 rounded-xl text-xs md:text-sm font-medium text-gray-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all appearance-none cursor-pointer">
+            className="w-full px-3 md:px-4 py-2 md:py-2.5 bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-xl text-sm font-medium text-gray-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all appearance-none cursor-pointer">
             <option value="">All Departments</option>
             <option value="cardiology">Cardiology Unit</option>
             <option value="pediatrics">Pediatrics Unit</option>
@@ -98,7 +98,7 @@ export default function DashboardPage() {
       {/* KPI Cards */}
       <div className="kpi-grid">
         {kpiCards.map((kpi, i) => (
-          <div key={i} className="bg-white dark:bg-slate-800 rounded-2xl shadow-[0_2px_12px_rgba(0,0,0,.04)] dark:shadow-[0_2px_12px_rgba(0,0,0,.2)] border border-gray-100 dark:border-slate-700 p-6 relative overflow-hidden group hover:-translate-y-1 hover:shadow-xl transition-all duration-300">
+          <div key={i} className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-200 dark:border-slate-700 p-6 relative overflow-hidden group hover:-translate-y-1 hover:shadow-lg transition-all duration-300">
             <div className={`absolute -right-4 -top-4 w-24 h-24 rounded-full opacity-10 ${kpi.color} blur-2xl group-hover:scale-150 transition-transform duration-500`}></div>
             <div className="flex items-center justify-between mb-4 relative z-10">
               <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl shadow-lg ${kpi.color} text-white ${kpi.shadow}`}>
@@ -120,7 +120,7 @@ export default function DashboardPage() {
       <div className="chart-grid">
         
         {/* Appointment Status */}
-        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-[0_2px_12px_rgba(0,0,0,.04)] dark:shadow-[0_2px_12px_rgba(0,0,0,.2)] border border-gray-100 dark:border-slate-700 p-6 flex flex-col">
+        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-200 dark:border-slate-700 p-6 flex flex-col">
           <div className="flex items-center justify-between mb-6">
             <h3 className="font-bold text-gray-900 dark:text-white text-lg">Appointment Status</h3>
             <button className="text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 p-2 rounded-lg transition-colors">
@@ -153,7 +153,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Revenue Trend */}
-        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-[0_2px_12px_rgba(0,0,0,.04)] dark:shadow-[0_2px_12px_rgba(0,0,0,.2)] border border-gray-100 dark:border-slate-700 p-6">
+        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-200 dark:border-slate-700 p-6">
           <div className="flex items-center justify-between mb-6">
             <h3 className="font-bold text-gray-900 dark:text-white text-lg">Revenue Trend (7 Days)</h3>
           </div>
