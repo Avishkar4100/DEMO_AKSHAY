@@ -1,26 +1,80 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { loginAPI } from '../services/api';
+import { validators, validateField } from '../utils/validation';
+import ValidatedInput from '../components/ValidatedInput';
 
 export default function LoginPage() {
   const [form, setForm] = useState({ username: '', password: '', remember_me: false });
-  const [error, setError] = useState('');
+  const [errors, setErrors] = useState({ username: null, password: null });
+  const [touched, setTouched] = useState({ username: false, password: false });
+  const [serverError, setServerError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [formValid, setFormValid] = useState(false);
   const navigate = useNavigate();
+
+  // Real-time validation on change
+  useEffect(() => {
+    const uError = touched.username ? validateField(form.username, [
+      validators.required,
+      validators.username,
+      validators.email,
+    ], 'Username') : null;
+    const pError = touched.password ? validateField(form.password, [
+      validators.required,
+      validators.minLength(6),
+    ], 'Password') : null;
+    setErrors({ username: uError, password: pError });
+    setFormValid(
+      form.username.trim().length > 0 && form.password.length > 0
+    );
+  }, [form.username, form.password, touched.username, touched.password]);
+
+  const handleBlur = (field) => {
+    setTouched((prev) => ({ ...prev, [field]: true }));
+    const value = field === 'username' ? form.username : form.password;
+    const rules = field === 'username'
+      ? [validators.required, validators.username, validators.email]
+      : [validators.required, validators.minLength(6)];
+    setErrors((prev) => ({
+      ...prev,
+      [field]: validateField(value, rules, field === 'username' ? 'Username' : 'Password'),
+    }));
+  };
+
+  const inputClass = (field) => {
+    const hasError = touched[field] && errors[field];
+    const isValid = touched[field] && !errors[field] && form[field].length > 0;
+    return `
+      w-full px-4 py-3 border-2 rounded-lg text-sm outline-none transition-all duration-200
+      ${hasError
+        ? 'border-red-300 bg-red-50 focus:ring-red-500 focus:border-red-500'
+        : isValid
+          ? 'border-green-300 bg-green-50 focus:ring-green-500 focus:border-green-500'
+          : 'border-gray-300 focus:ring-indigo-500 focus:border-indigo-500'
+      }
+      focus:ring-2 pr-10
+    `;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setTouched({ username: true, password: true });
+    const uError = validateField(form.username, [validators.required, validators.username, validators.email], 'Username');
+    const pError = validateField(form.password, [validators.required, validators.minLength(6)], 'Password');
+    setErrors({ username: uError, password: pError });
+    if (uError || pError) return;
+    setServerError('');
     setLoading(true);
     try {
       const res = await loginAPI.form(form);
       if (res.data.success) {
         navigate('/dashboard');
       } else {
-        setError(res.data.error || 'Login failed');
+        setServerError(res.data.error || 'Login failed');
       }
     } catch (err) {
-      setError(err.response?.data?.error || 'Invalid credentials');
+      setServerError(err.response?.data?.error || 'Invalid credentials');
     } finally {
       setLoading(false);
     }
@@ -37,41 +91,99 @@ export default function LoginPage() {
           <p className="text-gray-500 mt-2">Hospital Management System</p>
         </div>
 
-        {error && (
-          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600">
-            {error}
+        {/* Server error banner */}
+        {serverError && (
+          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600 flex items-center gap-2">
+            <i className="fas fa-exclamation-triangle"></i>
+            {serverError}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-5" noValidate>
+          {/* Username / Email field */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Username or Email
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">
+              <i className="fas fa-user text-indigo-400 mr-1.5"></i>
+              Username or Email <span className="text-red-500">*</span>
             </label>
-            <input
-              type="text"
-              required
-              value={form.username}
-              onChange={(e) => setForm({ ...form, username: e.target.value })}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
-              placeholder="Enter your username"
-            />
+            <div className="relative">
+              <input
+                type="text"
+                value={form.username}
+                onChange={(e) => setForm({ ...form, username: e.target.value })}
+                onBlur={() => handleBlur('username')}
+                placeholder="e.g. admin@hms.local"
+                className={inputClass('username')}
+                required
+                minLength={3}
+                maxLength={50}
+                autoComplete="username"
+                autoFocus
+              />
+              {touched.username && form.username && (
+                <span className="absolute right-3 top-1/2 -translate-y-1/2">
+                  {errors.username ? (
+                    <i className="fas fa-exclamation-circle text-red-400"></i>
+                  ) : (
+                    <i className="fas fa-check-circle text-green-400"></i>
+                  )}
+                </span>
+              )}
+            </div>
+            {touched.username && errors.username && (
+              <p className="mt-1.5 text-xs text-red-500 flex items-center gap-1">
+                <i className="fas fa-info-circle"></i> {errors.username}
+              </p>
+            )}
+            {touched.username && !errors.username && form.username && (
+              <p className="mt-1 text-xs text-green-500 flex items-center gap-1">
+                <i className="fas fa-check"></i> Looks good!
+              </p>
+            )}
           </div>
 
+          {/* Password field */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Password
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">
+              <i className="fas fa-lock text-indigo-400 mr-1.5"></i>
+              Password <span className="text-red-500">*</span>
             </label>
-            <input
-              type="password"
-              required
-              value={form.password}
-              onChange={(e) => setForm({ ...form, password: e.target.value })}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
-              placeholder="Enter your password"
-            />
+            <div className="relative">
+              <input
+                type="password"
+                value={form.password}
+                onChange={(e) => setForm({ ...form, password: e.target.value })}
+                onBlur={() => handleBlur('password')}
+                placeholder="Enter your password"
+                className={inputClass('password')}
+                required
+                minLength={6}
+                maxLength={128}
+                autoComplete="current-password"
+              />
+              {touched.password && form.password && (
+                <span className="absolute right-3 top-1/2 -translate-y-1/2">
+                  {errors.password ? (
+                    <i className="fas fa-exclamation-circle text-red-400"></i>
+                  ) : (
+                    <i className="fas fa-check-circle text-green-400"></i>
+                  )}
+                </span>
+              )}
+            </div>
+            {touched.password && errors.password && (
+              <p className="mt-1.5 text-xs text-red-500 flex items-center gap-1">
+                <i className="fas fa-info-circle"></i> {errors.password}
+              </p>
+            )}
+            {touched.password && !errors.password && form.password && (
+              <p className="mt-1 text-xs text-green-500 flex items-center gap-1">
+                <i className="fas fa-check"></i> Password is valid
+              </p>
+            )}
           </div>
 
+          {/* Remember me */}
           <div className="flex items-center gap-2">
             <input
               type="checkbox"
@@ -85,15 +197,21 @@ export default function LoginPage() {
             </label>
           </div>
 
+          {/* Submit button */}
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-md hover:shadow-lg"
           >
-            {loading ? 'Signing in...' : 'Sign in'}
+            {loading ? (
+              <><i className="fas fa-spinner fa-spin"></i> Signing in...</>
+            ) : (
+              <><i className="fas fa-sign-in-alt"></i> Sign in</>
+            )}
           </button>
         </form>
 
+        {/* Demo credentials */}
         <div className="mt-6 p-4 bg-indigo-50 border border-indigo-100 rounded-lg">
           <p className="text-xs font-semibold text-indigo-600 mb-2">
             <i className="fas fa-info-circle mr-1"></i> DEMO CREDENTIALS
