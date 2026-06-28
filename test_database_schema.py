@@ -172,7 +172,7 @@ class DatabaseSchemaTest(unittest.TestCase):
 
         remaining_apts = Appointment.query.filter_by(patient_id=patient_id).count()
         self.assertEqual(remaining_apts, 0, "Cascade delete failed for appointments")
-        print("  [OK] Cascade delete works (patient → appointments)")
+        print("  [OK] Cascade delete works (patient -> appointments)")
 
     # ── AC-3: Schema supports scalability ──
 
