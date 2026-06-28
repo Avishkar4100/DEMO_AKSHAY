@@ -77,20 +77,21 @@ export default function AppointmentsPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4 md:space-y-5">
+      {/* Header - responsive */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-sm">
+          <div className="hidden sm:flex w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 items-center justify-center shadow-sm shrink-0">
             <i className="fas fa-calendar-check text-white text-lg"></i>
           </div>
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">Appointments</h1>
-            <p className="text-gray-500 text-sm">Schedule and manage appointments</p>
+          <div className="min-w-0">
+            <h1 className="text-xl md:text-2xl font-bold text-gray-900">Appointments</h1>
+            <p className="text-gray-500 text-xs md:text-sm">Schedule and manage appointments</p>
           </div>
         </div>
         <button
           onClick={() => setShowModal(true)}
-          className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 text-sm font-medium transition-colors shadow-sm"
+          className="self-start sm:self-auto px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 text-sm font-medium transition-colors shadow-sm"
         >
           <i className="fas fa-plus mr-1.5"></i> New Appointment
         </button>
@@ -104,27 +105,27 @@ export default function AppointmentsPage() {
 
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="w-full text-sm tablet-responsive-table">
             <thead>
               <tr className="bg-gray-50 border-b border-gray-200">
-                <th className="text-left px-4 py-3 font-medium text-gray-600"><i className="fas fa-user text-indigo-400 mr-1.5"></i>Patient</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-600"><i className="fas fa-user-md text-indigo-400 mr-1.5"></i>Doctor</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-600"><i className="fas fa-calendar text-indigo-400 mr-1.5"></i>Date</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-600"><i className="fas fa-clock text-indigo-400 mr-1.5"></i>Time</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-600"><i className="fas fa-tag text-indigo-400 mr-1.5"></i>Type</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-600"><i className="fas fa-circle text-indigo-400 mr-1.5"></i>Status</th>
-                <th className="text-right px-4 py-3 font-medium text-gray-600"><i className="fas fa-cog text-indigo-400 mr-1.5"></i>Actions</th>
+                <th className="text-left px-3 md:px-4 py-3 font-medium text-gray-600 whitespace-nowrap"><i className="fas fa-user text-indigo-400 mr-1.5"></i>Patient</th>
+                <th className="text-left px-3 md:px-4 py-3 font-medium text-gray-600 whitespace-nowrap"><i className="fas fa-user-md text-indigo-400 mr-1.5"></i>Doctor</th>
+                <th className="text-left px-3 md:px-4 py-3 font-medium text-gray-600 whitespace-nowrap"><i className="fas fa-calendar text-indigo-400 mr-1.5"></i>Date</th>
+                <th className="text-left px-3 md:px-4 py-3 font-medium text-gray-600 whitespace-nowrap"><i className="fas fa-clock text-indigo-400 mr-1.5"></i>Time</th>
+                <th className="text-left px-3 md:px-4 py-3 font-medium text-gray-600 whitespace-nowrap tablet-hide-col"><i className="fas fa-tag text-indigo-400 mr-1.5"></i>Type</th>
+                <th className="text-left px-3 md:px-4 py-3 font-medium text-gray-600 whitespace-nowrap"><i className="fas fa-circle text-indigo-400 mr-1.5"></i>Status</th>
+                <th className="text-right px-3 md:px-4 py-3 font-medium text-gray-600 whitespace-nowrap"><i className="fas fa-cog text-indigo-400 mr-1.5"></i>Actions</th>
               </tr>
             </thead>
             <tbody>
               {appointments.map((a) => (
                 <tr key={a.id} className="border-b border-gray-100 hover:bg-gray-50">
-                  <td className="px-4 py-3 font-medium">{a.patient}</td>
-                  <td className="px-4 py-3 text-gray-600">{a.doctor}</td>
-                  <td className="px-4 py-3 text-gray-600">{a.date}</td>
-                  <td className="px-4 py-3 text-gray-600">{a.time}</td>
-                  <td className="px-4 py-3 text-gray-600">{a.type}</td>
-                  <td className="px-4 py-3">
+                  <td className="px-3 md:px-4 py-3 font-medium">{a.patient}</td>
+                  <td className="px-3 md:px-4 py-3 text-gray-600">{a.doctor}</td>
+                  <td className="px-3 md:px-4 py-3 text-gray-600 whitespace-nowrap">{a.date}</td>
+                  <td className="px-3 md:px-4 py-3 text-gray-600">{a.time}</td>
+                  <td className="px-3 md:px-4 py-3 text-gray-600 tablet-hide-col">{a.type}</td>
+                  <td className="px-3 md:px-4 py-3">
                     <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${STATUS_COLORS[a.status] || 'bg-gray-100 text-gray-600'}`}>
                       <i className={`fas fa-circle text-[6px] ${
                         a.status === 'Scheduled' ? 'text-blue-500' :
@@ -134,8 +135,8 @@ export default function AppointmentsPage() {
                       {a.status}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-right">
-                    <button className="text-indigo-600 hover:text-indigo-800 text-sm font-medium">
+                  <td className="px-3 md:px-4 py-3 text-right">
+                    <button className="text-indigo-600 hover:text-indigo-800 text-xs md:text-sm font-medium whitespace-nowrap">
                       <i className="fas fa-edit mr-1"></i>Edit
                     </button>
                   </td>

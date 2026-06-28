@@ -81,20 +81,21 @@ export default function BillingPage() {
   const pendingAmount = bills.filter(b => b.status !== 'Paid').reduce((s, b) => s + b.amount, 0);
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4 md:space-y-5">
+      {/* Header - responsive */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-sm">
+          <div className="hidden sm:flex w-10 h-10 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 items-center justify-center shadow-sm shrink-0">
             <i className="fas fa-file-invoice-dollar text-white text-lg"></i>
           </div>
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">Billing</h1>
-            <p className="text-gray-500 text-sm">Invoices and payment tracking</p>
+          <div className="min-w-0">
+            <h1 className="text-xl md:text-2xl font-bold text-gray-900">Billing</h1>
+            <p className="text-gray-500 text-xs md:text-sm">Invoices and payment tracking</p>
           </div>
         </div>
         <button
           onClick={() => setShowModal(true)}
-          className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 text-sm font-medium transition-colors shadow-sm"
+          className="self-start sm:self-auto px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 text-sm font-medium transition-colors shadow-sm"
         >
           <i className="fas fa-plus mr-1.5"></i> New Invoice
         </button>
@@ -106,53 +107,54 @@ export default function BillingPage() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+      {/* Summary cards - responsive grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 md:p-5">
           <div className="flex items-center gap-2 mb-2">
             <i className="fas fa-dollar-sign text-green-500"></i>
-            <p className="text-sm text-gray-500">Total Revenue</p>
+            <p className="text-xs md:text-sm text-gray-500">Total Revenue</p>
           </div>
-          <p className="text-2xl font-bold text-green-600">${totalRevenue.toFixed(2)}</p>
+          <p className="text-xl md:text-2xl font-bold text-green-600">${totalRevenue.toFixed(2)}</p>
         </div>
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 md:p-5">
           <div className="flex items-center gap-2 mb-2">
             <i className="fas fa-hourglass-half text-amber-500"></i>
-            <p className="text-sm text-gray-500">Pending</p>
+            <p className="text-xs md:text-sm text-gray-500">Pending</p>
           </div>
-          <p className="text-2xl font-bold text-amber-600">${pendingAmount.toFixed(2)}</p>
+          <p className="text-xl md:text-2xl font-bold text-amber-600">${pendingAmount.toFixed(2)}</p>
         </div>
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 md:p-5">
           <div className="flex items-center gap-2 mb-2">
             <i className="fas fa-receipt text-indigo-500"></i>
-            <p className="text-sm text-gray-500">Total Invoices</p>
+            <p className="text-xs md:text-sm text-gray-500">Total Invoices</p>
           </div>
-          <p className="text-2xl font-bold text-gray-900">{bills.length}</p>
+          <p className="text-xl md:text-2xl font-bold text-gray-900">{bills.length}</p>
         </div>
       </div>
 
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="w-full text-sm tablet-responsive-table">
             <thead>
               <tr className="bg-gray-50 border-b border-gray-200">
-                <th className="text-left px-4 py-3 font-medium text-gray-600"><i className="fas fa-hashtag text-indigo-400 mr-1.5"></i>Invoice</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-600"><i className="fas fa-user text-indigo-400 mr-1.5"></i>Patient</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-600"><i className="fas fa-dollar-sign text-indigo-400 mr-1.5"></i>Amount</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-600"><i className="fas fa-calendar text-indigo-400 mr-1.5"></i>Date</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-600"><i className="fas fa-credit-card text-indigo-400 mr-1.5"></i>Payment</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-600"><i className="fas fa-circle text-indigo-400 mr-1.5"></i>Status</th>
-                <th className="text-right px-4 py-3 font-medium text-gray-600"><i className="fas fa-cog text-indigo-400 mr-1.5"></i>Actions</th>
+                <th className="text-left px-3 md:px-4 py-3 font-medium text-gray-600 whitespace-nowrap"><i className="fas fa-hashtag text-indigo-400 mr-1.5"></i>Invoice</th>
+                <th className="text-left px-3 md:px-4 py-3 font-medium text-gray-600 whitespace-nowrap"><i className="fas fa-user text-indigo-400 mr-1.5"></i>Patient</th>
+                <th className="text-left px-3 md:px-4 py-3 font-medium text-gray-600 whitespace-nowrap"><i className="fas fa-dollar-sign text-indigo-400 mr-1.5"></i>Amount</th>
+                <th className="text-left px-3 md:px-4 py-3 font-medium text-gray-600 whitespace-nowrap"><i className="fas fa-calendar text-indigo-400 mr-1.5"></i>Date</th>
+                <th className="text-left px-3 md:px-4 py-3 font-medium text-gray-600 whitespace-nowrap tablet-hide-col"><i className="fas fa-credit-card text-indigo-400 mr-1.5"></i>Payment</th>
+                <th className="text-left px-3 md:px-4 py-3 font-medium text-gray-600 whitespace-nowrap"><i className="fas fa-circle text-indigo-400 mr-1.5"></i>Status</th>
+                <th className="text-right px-3 md:px-4 py-3 font-medium text-gray-600 whitespace-nowrap"><i className="fas fa-cog text-indigo-400 mr-1.5"></i>Actions</th>
               </tr>
             </thead>
             <tbody>
               {bills.map((b) => (
                 <tr key={b.id} className="border-b border-gray-100 hover:bg-gray-50">
-                  <td className="px-4 py-3 font-medium">{b.id}</td>
-                  <td className="px-4 py-3 text-gray-600">{b.patient}</td>
-                  <td className="px-4 py-3 font-medium">${b.amount.toFixed(2)}</td>
-                  <td className="px-4 py-3 text-gray-600">{b.date}</td>
-                  <td className="px-4 py-3 text-gray-600">{b.method}</td>
-                  <td className="px-4 py-3">
+                  <td className="px-3 md:px-4 py-3 font-medium text-xs md:text-sm">{b.id}</td>
+                  <td className="px-3 md:px-4 py-3 text-gray-600">{b.patient}</td>
+                  <td className="px-3 md:px-4 py-3 font-medium whitespace-nowrap">${b.amount.toFixed(2)}</td>
+                  <td className="px-3 md:px-4 py-3 text-gray-600 whitespace-nowrap">{b.date}</td>
+                  <td className="px-3 md:px-4 py-3 text-gray-600 tablet-hide-col">{b.method}</td>
+                  <td className="px-3 md:px-4 py-3">
                     <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${statusColors[b.status]}`}>
                       <i className={`fas fa-circle text-[6px] ${
                         b.status === 'Paid' ? 'text-green-500' :
@@ -161,12 +163,12 @@ export default function BillingPage() {
                       {b.status}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-right space-x-2">
-                    <button className="text-indigo-600 hover:text-indigo-800 text-sm font-medium">
-                      <i className="fas fa-eye mr-1"></i>View
+                  <td className="px-3 md:px-4 py-3 text-right space-x-1.5 md:space-x-2 whitespace-nowrap">
+                    <button className="text-indigo-600 hover:text-indigo-800 text-xs md:text-sm font-medium">
+                      <i className="fas fa-eye mr-0.5 md:mr-1"></i>View
                     </button>
-                    <button className="text-gray-600 hover:text-gray-800 text-sm font-medium">
-                      <i className="fas fa-print mr-1"></i>Print
+                    <button className="text-gray-600 hover:text-gray-800 text-xs md:text-sm font-medium">
+                      <i className="fas fa-print mr-0.5 md:mr-1"></i>Print
                     </button>
                   </td>
                 </tr>

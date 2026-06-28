@@ -80,20 +80,21 @@ export default function PatientsPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4 md:space-y-5">
+      {/* Header - responsive */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-sm">
+          <div className="hidden sm:flex w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 items-center justify-center shadow-sm shrink-0">
             <i className="fas fa-users text-white text-lg"></i>
           </div>
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">Patients</h1>
-            <p className="text-gray-500 text-sm">Manage patient records</p>
+          <div className="min-w-0">
+            <h1 className="text-xl md:text-2xl font-bold text-gray-900">Patients</h1>
+            <p className="text-gray-500 text-xs md:text-sm">Manage patient records</p>
           </div>
         </div>
         <button
           onClick={() => setShowModal(true)}
-          className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 text-sm font-medium transition-colors shadow-sm"
+          className="self-start sm:self-auto px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 text-sm font-medium transition-colors shadow-sm"
         >
           <i className="fas fa-plus mr-1.5"></i> Add Patient
         </button>
@@ -106,34 +107,35 @@ export default function PatientsPage() {
         </div>
       )}
 
+      {/* Responsive table */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="w-full text-sm tablet-responsive-table">
             <thead>
               <tr className="bg-gray-50 border-b border-gray-200">
-                <th className="text-left px-4 py-3 font-medium text-gray-600"><i className="fas fa-user text-indigo-400 mr-1.5"></i>Name</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-600"><i className="fas fa-cake-candles text-indigo-400 mr-1.5"></i>Age</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-600"><i className="fas fa-venus-mars text-indigo-400 mr-1.5"></i>Gender</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-600"><i className="fas fa-phone text-indigo-400 mr-1.5"></i>Contact</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-600"><i className="fas fa-circle text-indigo-400 mr-1.5"></i>Status</th>
-                <th className="text-right px-4 py-3 font-medium text-gray-600"><i className="fas fa-cog text-indigo-400 mr-1.5"></i>Actions</th>
+                <th className="text-left px-3 md:px-4 py-3 font-medium text-gray-600 whitespace-nowrap"><i className="fas fa-user text-indigo-400 mr-1.5"></i>Name</th>
+                <th className="text-left px-3 md:px-4 py-3 font-medium text-gray-600 whitespace-nowrap"><i className="fas fa-cake-candles text-indigo-400 mr-1.5"></i>Age</th>
+                <th className="text-left px-3 md:px-4 py-3 font-medium text-gray-600 whitespace-nowrap"><i className="fas fa-venus-mars text-indigo-400 mr-1.5"></i>Gender</th>
+                <th className="text-left px-3 md:px-4 py-3 font-medium text-gray-600 whitespace-nowrap tablet-hide-col"><i className="fas fa-phone text-indigo-400 mr-1.5"></i>Contact</th>
+                <th className="text-left px-3 md:px-4 py-3 font-medium text-gray-600 whitespace-nowrap"><i className="fas fa-circle text-indigo-400 mr-1.5"></i>Status</th>
+                <th className="text-right px-3 md:px-4 py-3 font-medium text-gray-600 whitespace-nowrap"><i className="fas fa-cog text-indigo-400 mr-1.5"></i>Actions</th>
               </tr>
             </thead>
             <tbody>
               {patients.map((p) => (
                 <tr key={p.id} className="border-b border-gray-100 hover:bg-gray-50">
-                  <td className="px-4 py-3 font-medium">{p.name}</td>
-                  <td className="px-4 py-3 text-gray-600">{p.age}</td>
-                  <td className="px-4 py-3 text-gray-600">{p.gender}</td>
-                  <td className="px-4 py-3 text-gray-600">{p.contact}</td>
-                  <td className="px-4 py-3">
+                  <td className="px-3 md:px-4 py-3 font-medium">{p.name}</td>
+                  <td className="px-3 md:px-4 py-3 text-gray-600">{p.age}</td>
+                  <td className="px-3 md:px-4 py-3 text-gray-600">{p.gender}</td>
+                  <td className="px-3 md:px-4 py-3 text-gray-600 tablet-hide-col">{p.contact}</td>
+                  <td className="px-3 md:px-4 py-3">
                     <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${p.status === 'Active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'}`}>
                       <i className={`fas fa-circle text-[6px] ${p.status === 'Active' ? 'text-green-500' : 'text-gray-400'}`}></i>
                       {p.status}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-right">
-                    <button className="text-indigo-600 hover:text-indigo-800 text-sm font-medium">
+                  <td className="px-3 md:px-4 py-3 text-right">
+                    <button className="text-indigo-600 hover:text-indigo-800 text-xs md:text-sm font-medium whitespace-nowrap">
                       <i className="fas fa-edit mr-1"></i>Edit
                     </button>
                   </td>

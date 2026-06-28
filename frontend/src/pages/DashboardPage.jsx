@@ -53,13 +53,13 @@ export default function DashboardPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="page-enter">
-        <div className="flex items-center gap-3 mb-1">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-sm">
+        <div className="flex items-start md:items-center gap-3 mb-1">
+          <div className="hidden sm:flex w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 items-center justify-center shadow-sm shrink-0">
             <i className="fas fa-chart-line text-white text-lg"></i>
           </div>
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">Healthcare Dashboard</h1>
-            <p className="text-gray-500 text-sm">
+          <div className="min-w-0">
+            <h1 className="text-xl md:text-2xl font-bold text-gray-900 truncate">Healthcare Dashboard</h1>
+            <p className="text-gray-500 text-xs md:text-sm truncate">
               {status?.last_update
                 ? `Last updated: ${new Date(status.last_update).toLocaleTimeString()}`
                 : 'Real-time hospital metrics and analytics'}
@@ -68,22 +68,22 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Filters */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 flex flex-wrap gap-4 items-end">
-        <div>
+      {/* Filters - responsive on tablet */}
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-3 md:p-4 flex flex-wrap gap-3 items-end">
+        <div className="flex-1 min-w-[130px] md:flex-none">
           <label className="block text-xs font-medium text-gray-600 mb-1"><i className="fas fa-calendar-alt mr-1 text-indigo-400"></i> From</label>
           <input type="date" value={filters.dateFrom} onChange={(e) => setFilters({ ...filters, dateFrom: e.target.value })}
-            className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none" />
+            className="w-full md:w-auto px-2.5 md:px-3 py-2 border border-gray-300 rounded-lg text-xs md:text-sm focus:ring-2 focus:ring-indigo-500 outline-none" />
         </div>
-        <div>
+        <div className="flex-1 min-w-[130px] md:flex-none">
           <label className="block text-xs font-medium text-gray-600 mb-1"><i className="fas fa-calendar-alt mr-1 text-indigo-400"></i> To</label>
           <input type="date" value={filters.dateTo} onChange={(e) => setFilters({ ...filters, dateTo: e.target.value })}
-            className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none" />
+            className="w-full md:w-auto px-2.5 md:px-3 py-2 border border-gray-300 rounded-lg text-xs md:text-sm focus:ring-2 focus:ring-indigo-500 outline-none" />
         </div>
-        <div>
+        <div className="flex-1 min-w-[140px] md:flex-none">
           <label className="block text-xs font-medium text-gray-600 mb-1"><i className="fas fa-building mr-1 text-indigo-400"></i> Department</label>
           <select value={filters.department} onChange={(e) => setFilters({ ...filters, department: e.target.value })}
-            className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+            className="w-full md:w-auto px-2.5 md:px-3 py-2 border border-gray-300 rounded-lg text-xs md:text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
             <option value="">All</option>
             <option value="cardiology">Cardiology</option>
             <option value="pediatrics">Pediatrics</option>
@@ -93,8 +93,8 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* KPI Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* KPI Cards - responsive grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 md:gap-4">
         {kpiCards.map((kpi, i) => (
           <div key={i} className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between mb-3">
@@ -109,8 +109,8 @@ export default function DashboardPage() {
         ))}
       </div>
 
-      {/* Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      {/* Charts - stacked on tablet, 2-col on desktop */}
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 md:gap-5">
         {/* Appointment Status */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
           <h3 className="font-semibold text-gray-900 mb-4"><i className="fas fa-chart-bar text-indigo-500 mr-2"></i> Appointment Status</h3>

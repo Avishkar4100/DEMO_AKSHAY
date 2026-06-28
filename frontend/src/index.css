@@ -79,3 +79,82 @@ body {
 .page-enter {
   animation: fadeInUp 0.35s ease-out forwards;
 }
+
+/* ===== Responsive Tablet Styles (768px - 1024px) ===== */
+
+/* Tablet: better table readability */
+@media (max-width: 1024px) {
+  .tablet-responsive-table {
+    font-size: 0.8125rem;
+  }
+  .tablet-responsive-table th,
+  .tablet-responsive-table td {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+  /* Hide less important columns on small tablets */
+  .tablet-hide-col {
+    display: none;
+  }
+}
+
+/* Tablet: card grid adjustments */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .tablet-grid-2 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .tablet-grid-3 {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+  .tablet-p-4 {
+    padding: 1rem !important;
+  }
+  .tablet-p-5 {
+    padding: 1.25rem !important;
+  }
+  .tablet-gap-3 {
+    gap: 0.75rem !important;
+  }
+  .tablet-gap-4 {
+    gap: 1rem !important;
+  }
+  .tablet-text-sm {
+    font-size: 0.875rem !important;
+  }
+  .tablet-mb-4 {
+    margin-bottom: 1rem !important;
+  }
+  .tablet-stack {
+    flex-direction: column !important;
+  }
+  .tablet-w-full {
+    width: 100% !important;
+  }
+}
+
+/* Smooth responsive transitions */
+* {
+  transition-property: background-color, border-color, color, transform, box-shadow;
+  transition-duration: 150ms;
+  transition-timing-function: ease-in-out;
+}
+
+/* Responsive table wrapper - horizontal scroll hint */
+.table-scroll-hint {
+  position: relative;
+}
+.table-scroll-hint::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 24px;
+  background: linear-gradient(to right, transparent, rgba(255,255,255,0.8));
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.table-scroll-hint.is-scrollable::after {
+  opacity: 1;
+}

@@ -66,20 +66,20 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="max-w-2xl mx-auto space-y-4 md:space-y-5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-sm">
+          <div className="hidden sm:flex w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 items-center justify-center shadow-sm shrink-0">
             <i className="fas fa-user-circle text-white text-lg"></i>
           </div>
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">Profile</h1>
-            <p className="text-gray-500 text-sm">Your account information</p>
+          <div className="min-w-0">
+            <h1 className="text-xl md:text-2xl font-bold text-gray-900">Profile</h1>
+            <p className="text-gray-500 text-xs md:text-sm">Your account information</p>
           </div>
         </div>
         {!editing && (
           <button onClick={() => setEditing(true)}
-            className="px-4 py-2 text-sm font-medium text-indigo-600 bg-indigo-50 hover:bg-indigo-100 rounded-lg transition-colors">
+            className="self-start sm:self-auto px-4 py-2 text-sm font-medium text-indigo-600 bg-indigo-50 hover:bg-indigo-100 rounded-lg transition-colors">
             <i className="fas fa-edit mr-1.5"></i> Edit
           </button>
         )}
