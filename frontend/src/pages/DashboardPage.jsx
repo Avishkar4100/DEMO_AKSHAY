@@ -157,7 +157,8 @@ export default function DashboardPage() {
           <div className="flex items-center justify-between mb-6">
             <h3 className="font-bold text-gray-900 dark:text-white text-lg">Revenue Trend (7 Days)</h3>
           </div>
-          <div className="h-64 flex items-end justify-between gap-2 border-b border-gray-100 dark:border-slate-700 pb-2">
+          <div className="chart-scroll">
+            <div className="h-64 flex items-end justify-between gap-2 border-b border-gray-100 dark:border-slate-700 pb-2 min-w-[350px]">
             {charts?.revenue_trend?.dates?.map((date, i) => {
               const max = Math.max(...charts.revenue_trend.revenue);
               const val = charts.revenue_trend.revenue[i];
@@ -179,8 +180,9 @@ export default function DashboardPage() {
             })}
           </div>
         </div>
-
       </div>
+      </div>
+
     </div>
   );
 }

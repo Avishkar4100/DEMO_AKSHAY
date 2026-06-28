@@ -212,16 +212,28 @@ export default function MainLayout() {
     >
       {/* Brand */}
       <div className="px-5 py-5 border-b border-white/10 flex-shrink-0">
-        <Link to="/dashboard" className="flex items-center gap-3 no-underline">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white flex-shrink-0"
-               style={{ background: 'rgba(255,255,255,.18)', border: '1px solid rgba(255,255,255,.25)' }}>
-            {icons['hospital']}
-          </div>
-          <div>
-            <div className="text-white font-extrabold text-lg leading-tight tracking-tight">HMS</div>
-            <div className="text-white/55 text-[10.5px] font-normal">Hospital Management</div>
-          </div>
-        </Link>
+        <div className="flex items-center justify-between">
+          <Link to="/dashboard" className="flex items-center gap-3 no-underline">
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white flex-shrink-0"
+                 style={{ background: 'rgba(255,255,255,.18)', border: '1px solid rgba(255,255,255,.25)' }}>
+              {icons['hospital']}
+            </div>
+            <div>
+              <div className="text-white font-extrabold text-lg leading-tight tracking-tight">HMS</div>
+              <div className="text-white/55 text-[10.5px] font-normal">Hospital Management</div>
+            </div>
+          </Link>
+          {/* Close button — mobile only */}
+          <button
+            onClick={() => setSidebarOpen(false)}
+            className="lg:hidden w-9 h-9 flex items-center justify-center rounded-lg text-white/60 hover:text-white hover:bg-white/13 transition-all"
+            aria-label="Close sidebar"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
       </div>
 
       {/* Nav sections */}
