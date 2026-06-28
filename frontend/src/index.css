@@ -62,3 +62,125 @@ body.dark {
   transition-duration: .2s;
   transition-timing-function: ease;
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+   Responsive Design System
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── Responsive container padding ── */
+.responsive-px {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+@media (min-width: 640px) {
+  .responsive-px { padding-left: 1.5rem; padding-right: 1.5rem; }
+}
+@media (min-width: 1024px) {
+  .responsive-px { padding-left: 2rem; padding-right: 2rem; }
+}
+
+/* ── Responsive grid gap ── */
+.responsive-gap {
+  gap: 0.75rem;
+}
+@media (min-width: 640px) { .responsive-gap { gap: 1rem; } }
+@media (min-width: 1024px) { .responsive-gap { gap: 1.25rem; } }
+
+/* ── Hide columns on small screens ── */
+@media (max-width: 639px) {
+  .hide-mobile { display: none !important; }
+  .mobile-stack { flex-direction: column !important; }
+  .mobile-w-full { width: 100% !important; }
+  .mobile-text-sm { font-size: 0.8125rem !important; }
+  .mobile-p-3 { padding: 0.75rem !important; }
+  .mobile-px-3 { padding-left: 0.75rem !important; padding-right: 0.75rem !important; }
+  .mobile-py-2 { padding-top: 0.5rem !important; padding-bottom: 0.5rem !important; }
+  .mobile-gap-2 { gap: 0.5rem !important; }
+}
+
+/* ── Hide columns on tablet ── */
+@media (max-width: 1023px) {
+  .hide-tablet { display: none !important; }
+  .tablet-grid-2 { grid-template-columns: repeat(2, 1fr) !important; }
+  .tablet-grid-3 { grid-template-columns: repeat(3, 1fr) !important; }
+  .tablet-p-4 { padding: 1rem !important; }
+  .tablet-px-3 { padding-left: 0.75rem !important; padding-right: 0.75rem !important; }
+  .tablet-py-3 { padding-top: 0.75rem !important; padding-bottom: 0.75rem !important; }
+  .tablet-text-sm { font-size: 0.875rem !important; }
+}
+
+/* ── Table responsive helpers ── */
+.table-responsive-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+.table-responsive-wrap::-webkit-scrollbar {
+  height: 4px;
+}
+.table-responsive-wrap::-webkit-scrollbar-thumb {
+  background: rgba(99,102,241,.3);
+  border-radius: 4px;
+}
+
+/* ── Card responsive padding ── */
+@media (max-width: 639px) {
+  .card-body { padding: 1rem !important; }
+  .card-header { padding: 0.75rem 1rem !important; }
+}
+@media (min-width: 640px) and (max-width: 1023px) {
+  .card-body { padding: 1.25rem !important; }
+  .card-header { padding: 1rem 1.25rem !important; }
+}
+
+/* ── KPI grid responsive ── */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+@media (min-width: 480px) {
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+}
+@media (min-width: 768px) {
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+}
+@media (min-width: 1024px) {
+  .kpi-grid { grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
+}
+
+/* ── Chart grid responsive ── */
+.chart-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+@media (min-width: 768px) {
+  .chart-grid { grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
+}
+
+/* ── Hero section responsive ── */
+@media (max-width: 639px) {
+  .hero-title { font-size: 1.5rem !important; }
+  .hero-padding { padding: 1.5rem !important; }
+  .hero-badge { padding: 0.5rem 1rem !important; }
+}
+@media (min-width: 640px) and (max-width: 1023px) {
+  .hero-title { font-size: 2rem !important; }
+  .hero-padding { padding: 2rem !important; }
+}
+
+/* ── Filter bar responsive ── */
+@media (max-width: 639px) {
+  .filter-bar { padding: 0.75rem !important; gap: 0.5rem !important; }
+  .filter-bar .filter-group { min-width: 100% !important; }
+}
+@media (min-width: 640px) and (max-width: 1023px) {
+  .filter-bar .filter-group { min-width: 130px !important; }
+}
+
+/* ── Touch-friendly targets on mobile ── */
+@media (max-width: 639px) {
+  .touch-target { min-height: 44px; min-width: 44px; }
+  .touch-pad { padding: 0.625rem 0.875rem !important; }
+}

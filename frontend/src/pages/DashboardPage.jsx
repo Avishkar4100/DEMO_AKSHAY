@@ -53,12 +53,12 @@ export default function DashboardPage() {
     <div className="space-y-6 max-w-7xl mx-auto">
       
       {/* Hero Header */}
-      <div className="relative bg-gradient-to-br from-indigo-600 to-purple-700 rounded-3xl p-8 overflow-hidden shadow-xl shadow-indigo-200 dark:shadow-indigo-900/40">
+      <div className="relative bg-gradient-to-br from-indigo-600 to-purple-700 rounded-2xl md:rounded-3xl hero-padding overflow-hidden shadow-xl shadow-indigo-200 dark:shadow-indigo-900/40">
         <div className="absolute -top-24 -right-24 w-64 h-64 bg-white/10 rounded-full blur-3xl mix-blend-overlay"></div>
         <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-white/10 rounded-full blur-3xl mix-blend-overlay"></div>
-        <div className="relative z-10 text-white flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div className="relative z-10 text-white flex flex-col md:flex-row md:items-end justify-between gap-4 md:gap-6">
           <div>
-            <h1 className="text-3xl font-extrabold tracking-tight">Welcome to HMS</h1>
+            <h1 className="hero-title text-2xl md:text-3xl font-extrabold tracking-tight">Welcome to HMS</h1>
             <p className="text-indigo-100 font-medium mt-2 max-w-lg leading-relaxed">
               Real-time hospital metrics and analytics for {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
             </p>
@@ -71,22 +71,22 @@ export default function DashboardPage() {
       </div>
 
       {/* Filters (Glass style) */}
-      <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-lg rounded-2xl shadow-[0_2px_12px_rgba(0,0,0,.04)] dark:shadow-[0_2px_12px_rgba(0,0,0,.2)] border border-gray-100/50 dark:border-slate-700/50 p-5 flex flex-wrap gap-4 items-end">
-        <div className="flex-1 min-w-[150px]">
-          <label className="block text-xs font-bold text-gray-500 dark:text-slate-400 mb-1.5 uppercase tracking-wide">Start Date</label>
+      <div className="filter-bar bg-white/80 dark:bg-slate-800/80 backdrop-blur-lg rounded-2xl shadow-[0_2px_12px_rgba(0,0,0,.04)] dark:shadow-[0_2px_12px_rgba(0,0,0,.2)] border border-gray-100/50 dark:border-slate-700/50 p-4 md:p-5 flex flex-wrap gap-3 md:gap-4 items-end">
+        <div className="filter-group flex-1 min-w-[130px] md:min-w-[150px]">
+          <label className="block text-[10px] md:text-xs font-bold text-gray-500 dark:text-slate-400 mb-1 md:mb-1.5 uppercase tracking-wide">Start Date</label>
           <input type="date" value={filters.dateFrom} onChange={(e) => setFilters({ ...filters, dateFrom: e.target.value })}
-            className="w-full px-4 py-2.5 bg-gray-50/50 dark:bg-slate-700/50 border border-gray-200 dark:border-slate-600 rounded-xl text-sm font-medium text-gray-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all" />
+            className="w-full px-3 md:px-4 py-2 md:py-2.5 bg-gray-50/50 dark:bg-slate-700/50 border border-gray-200 dark:border-slate-600 rounded-xl text-xs md:text-sm font-medium text-gray-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all" />
         </div>
-        <div className="flex-1 min-w-[150px]">
-          <label className="block text-xs font-bold text-gray-500 dark:text-slate-400 mb-1.5 uppercase tracking-wide">End Date</label>
+        <div className="filter-group flex-1 min-w-[130px] md:min-w-[150px]">
+          <label className="block text-[10px] md:text-xs font-bold text-gray-500 dark:text-slate-400 mb-1 md:mb-1.5 uppercase tracking-wide">End Date</label>
           <input type="date" value={filters.dateTo} onChange={(e) => setFilters({ ...filters, dateTo: e.target.value })}
-            className="w-full px-4 py-2.5 bg-gray-50/50 dark:bg-slate-700/50 border border-gray-200 dark:border-slate-600 rounded-xl text-sm font-medium text-gray-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all" />
+            className="w-full px-3 md:px-4 py-2 md:py-2.5 bg-gray-50/50 dark:bg-slate-700/50 border border-gray-200 dark:border-slate-600 rounded-xl text-xs md:text-sm font-medium text-gray-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all" />
         </div>
-        <div className="flex-[2] min-w-[200px]">
-          <label className="block text-xs font-bold text-gray-500 dark:text-slate-400 mb-1.5 uppercase tracking-wide">Department Filter</label>
+        <div className="filter-group flex-[2] min-w-[150px] md:min-w-[200px]">
+          <label className="block text-[10px] md:text-xs font-bold text-gray-500 dark:text-slate-400 mb-1 md:mb-1.5 uppercase tracking-wide">Department</label>
           <select value={filters.department} onChange={(e) => setFilters({ ...filters, department: e.target.value })}
-            className="w-full px-4 py-2.5 bg-gray-50/50 dark:bg-slate-700/50 border border-gray-200 dark:border-slate-600 rounded-xl text-sm font-medium text-gray-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all appearance-none cursor-pointer">
-            <option value="">All Departments Overview</option>
+            className="w-full px-3 md:px-4 py-2 md:py-2.5 bg-gray-50/50 dark:bg-slate-700/50 border border-gray-200 dark:border-slate-600 rounded-xl text-xs md:text-sm font-medium text-gray-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all appearance-none cursor-pointer">
+            <option value="">All Departments</option>
             <option value="cardiology">Cardiology Unit</option>
             <option value="pediatrics">Pediatrics Unit</option>
             <option value="orthopedics">Orthopedics Unit</option>
@@ -96,7 +96,7 @@ export default function DashboardPage() {
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div className="kpi-grid">
         {kpiCards.map((kpi, i) => (
           <div key={i} className="bg-white dark:bg-slate-800 rounded-2xl shadow-[0_2px_12px_rgba(0,0,0,.04)] dark:shadow-[0_2px_12px_rgba(0,0,0,.2)] border border-gray-100 dark:border-slate-700 p-6 relative overflow-hidden group hover:-translate-y-1 hover:shadow-xl transition-all duration-300">
             <div className={`absolute -right-4 -top-4 w-24 h-24 rounded-full opacity-10 ${kpi.color} blur-2xl group-hover:scale-150 transition-transform duration-500`}></div>
@@ -117,7 +117,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Charts Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="chart-grid">
         
         {/* Appointment Status */}
         <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-[0_2px_12px_rgba(0,0,0,.04)] dark:shadow-[0_2px_12px_rgba(0,0,0,.2)] border border-gray-100 dark:border-slate-700 p-6 flex flex-col">

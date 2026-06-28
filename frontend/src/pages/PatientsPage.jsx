@@ -34,42 +34,42 @@ export default function PatientsPage() {
 
       {/* Data Table */}
       <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-[0_2px_12px_rgba(0,0,0,.04)] dark:shadow-[0_2px_12px_rgba(0,0,0,.2)] border border-gray-100 dark:border-slate-700 overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm text-left">
+        <div className="table-responsive-wrap">
+          <table className="w-full text-xs md:text-sm text-left">
             <thead>
               <tr className="bg-gray-50/50 dark:bg-slate-700/50 border-b border-gray-100 dark:border-slate-700 text-gray-500 dark:text-slate-400">
-                <th className="px-6 py-4 font-semibold">Patient</th>
-                <th className="px-6 py-4 font-semibold">Age</th>
-                <th className="px-6 py-4 font-semibold">Gender</th>
-                <th className="px-6 py-4 font-semibold">Contact</th>
-                <th className="px-6 py-4 font-semibold">Status</th>
-                <th className="px-6 py-4 font-semibold text-right">Actions</th>
+                <th className="px-4 md:px-6 py-3 md:py-4 font-semibold whitespace-nowrap">Patient</th>
+                <th className="px-4 md:px-6 py-3 md:py-4 font-semibold whitespace-nowrap">Age</th>
+                <th className="hide-tablet px-4 md:px-6 py-3 md:py-4 font-semibold whitespace-nowrap">Gender</th>
+                <th className="hide-mobile px-4 md:px-6 py-3 md:py-4 font-semibold whitespace-nowrap">Contact</th>
+                <th className="px-4 md:px-6 py-3 md:py-4 font-semibold whitespace-nowrap">Status</th>
+                <th className="px-4 md:px-6 py-3 md:py-4 font-semibold text-right whitespace-nowrap">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100 dark:divide-slate-700">
               {patients.map((p) => (
                 <tr key={p.id} className="hover:bg-indigo-50/30 dark:hover:bg-indigo-900/20 transition-colors group">
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-gray-100 dark:bg-slate-700 flex items-center justify-center text-lg shadow-sm border border-gray-200 dark:border-slate-600">
+                  <td className="px-4 md:px-6 py-3 md:py-4">
+                    <div className="flex items-center gap-2 md:gap-3">
+                      <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gray-100 dark:bg-slate-700 flex items-center justify-center text-sm md:text-lg shadow-sm border border-gray-200 dark:border-slate-600 flex-shrink-0">
                         {p.avatar}
                       </div>
-                      <div className="font-semibold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{p.name}</div>
+                      <div className="font-semibold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors text-xs md:text-sm truncate max-w-[100px] md:max-w-none">{p.name}</div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 text-gray-600 dark:text-slate-300 font-medium">{p.age}</td>
-                  <td className="px-6 py-4 text-gray-600 dark:text-slate-300">{p.gender}</td>
-                  <td className="px-6 py-4 text-gray-600 dark:text-slate-300">{p.contact}</td>
-                  <td className="px-6 py-4">
-                    <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold ${
+                  <td className="px-4 md:px-6 py-3 md:py-4 text-gray-600 dark:text-slate-300 font-medium">{p.age}</td>
+                  <td className="hide-tablet px-4 md:px-6 py-3 md:py-4 text-gray-600 dark:text-slate-300">{p.gender}</td>
+                  <td className="hide-mobile px-4 md:px-6 py-3 md:py-4 text-gray-600 dark:text-slate-300">{p.contact}</td>
+                  <td className="px-4 md:px-6 py-3 md:py-4">
+                    <span className={`inline-flex items-center gap-1.5 px-2 md:px-3 py-0.5 md:py-1 rounded-full text-[10px] md:text-xs font-bold whitespace-nowrap ${
                       p.status === 'Active' ? 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400' : 'bg-gray-100 dark:bg-slate-600 text-gray-600 dark:text-slate-300'
                     }`}>
                       {p.status === 'Active' && <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />}
                       {p.status}
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-right">
-                    <button className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 text-sm font-semibold hover:underline">
+                  <td className="px-4 md:px-6 py-3 md:py-4 text-right">
+                    <button className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 text-xs md:text-sm font-semibold hover:underline whitespace-nowrap touch-target touch-pad">
                       View Details
                     </button>
                   </td>

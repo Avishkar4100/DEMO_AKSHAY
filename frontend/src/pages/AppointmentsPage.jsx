@@ -34,44 +34,44 @@ export default function AppointmentsPage() {
 
       {/* Data Table */}
       <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-[0_2px_12px_rgba(0,0,0,.04)] dark:shadow-[0_2px_12px_rgba(0,0,0,.2)] border border-gray-100 dark:border-slate-700 overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm text-left">
+        <div className="table-responsive-wrap">
+          <table className="w-full text-xs md:text-sm text-left">
             <thead>
               <tr className="bg-gray-50/50 dark:bg-slate-700/50 border-b border-gray-100 dark:border-slate-700 text-gray-500 dark:text-slate-400">
-                <th className="px-6 py-4 font-semibold">Patient</th>
-                <th className="px-6 py-4 font-semibold">Doctor</th>
-                <th className="px-6 py-4 font-semibold">Date & Time</th>
-                <th className="px-6 py-4 font-semibold">Type</th>
-                <th className="px-6 py-4 font-semibold">Status</th>
-                <th className="px-6 py-4 font-semibold text-right">Actions</th>
+                <th className="px-4 md:px-6 py-3 md:py-4 font-semibold whitespace-nowrap">Patient</th>
+                <th className="px-4 md:px-6 py-3 md:py-4 font-semibold whitespace-nowrap hide-tablet">Doctor</th>
+                <th className="px-4 md:px-6 py-3 md:py-4 font-semibold whitespace-nowrap">Date & Time</th>
+                <th className="hide-mobile px-4 md:px-6 py-3 md:py-4 font-semibold whitespace-nowrap">Type</th>
+                <th className="px-4 md:px-6 py-3 md:py-4 font-semibold whitespace-nowrap">Status</th>
+                <th className="px-4 md:px-6 py-3 md:py-4 font-semibold text-right whitespace-nowrap">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100 dark:divide-slate-700">
               {appointments.map((a) => (
                 <tr key={a.id} className="hover:bg-indigo-50/30 dark:hover:bg-indigo-900/20 transition-colors group">
-                  <td className="px-6 py-4">
-                    <div className="font-semibold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{a.patient}</div>
+                  <td className="px-4 md:px-6 py-3 md:py-4">
+                    <div className="font-semibold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors text-xs md:text-sm truncate max-w-[100px] md:max-w-none">{a.patient}</div>
                   </td>
-                  <td className="px-6 py-4">
+                  <td className="hide-tablet px-4 md:px-6 py-3 md:py-4">
                     <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded-full bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-xs font-bold">
+                      <div className="w-6 h-6 rounded-full bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-xs font-bold flex-shrink-0">
                         {a.doctor.split(' ')[1][0]}
                       </div>
-                      <span className="text-gray-700 dark:text-slate-300 font-medium">{a.doctor}</span>
+                      <span className="text-gray-700 dark:text-slate-300 font-medium text-xs md:text-sm">{a.doctor}</span>
                     </div>
                   </td>
-                  <td className="px-6 py-4">
-                    <div className="text-gray-900 dark:text-white font-medium">{a.date}</div>
-                    <div className="text-gray-500 dark:text-slate-400 text-xs">{a.time}</div>
+                  <td className="px-4 md:px-6 py-3 md:py-4 whitespace-nowrap">
+                    <div className="text-gray-900 dark:text-white font-medium text-xs md:text-sm">{a.date}</div>
+                    <div className="text-gray-500 dark:text-slate-400 text-[10px] md:text-xs">{a.time}</div>
                   </td>
-                  <td className="px-6 py-4 text-gray-600 dark:text-slate-300">{a.type}</td>
-                  <td className="px-6 py-4">
-                    <span className={`inline-flex px-3 py-1 rounded-full text-xs font-bold ${statusColors[a.status] || 'bg-gray-100 dark:bg-slate-600 text-gray-600 dark:text-slate-300'}`}>
+                  <td className="hide-mobile px-4 md:px-6 py-3 md:py-4 text-gray-600 dark:text-slate-300 text-xs md:text-sm">{a.type}</td>
+                  <td className="px-4 md:px-6 py-3 md:py-4">
+                    <span className={`inline-flex px-2 md:px-3 py-0.5 md:py-1 rounded-full text-[10px] md:text-xs font-bold whitespace-nowrap ${statusColors[a.status] || 'bg-gray-100 dark:bg-slate-600 text-gray-600 dark:text-slate-300'}`}>
                       {a.status}
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-right">
-                    <button className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 text-sm font-semibold hover:underline">
+                  <td className="px-4 md:px-6 py-3 md:py-4 text-right">
+                    <button className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 text-xs md:text-sm font-semibold hover:underline whitespace-nowrap touch-target touch-pad">
                       Reschedule
                     </button>
                   </td>

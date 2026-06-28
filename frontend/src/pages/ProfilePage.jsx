@@ -19,8 +19,8 @@ export default function ProfilePage() {
         {/* Cover & Avatar Header */}
         <div className="h-32 bg-gradient-to-r from-indigo-500 to-purple-600"></div>
         
-        <div className="px-8 pb-8 relative">
-          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 -mt-12 sm:-mt-16 mb-8">
+        <div className="responsive-px pb-6 md:pb-8 relative">
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 md:gap-6 -mt-12 sm:-mt-16 mb-6 md:mb-8">
             <div className="flex items-end gap-6">
               <div className="w-24 h-24 sm:w-32 sm:h-32 bg-white dark:bg-slate-800 p-2 rounded-2xl shadow-lg border border-gray-100 dark:border-slate-700 flex-shrink-0 relative">
                 <div className="w-full h-full bg-indigo-50 dark:bg-indigo-900/40 rounded-xl flex items-center justify-center text-4xl shadow-inner border border-indigo-100 dark:border-indigo-700">

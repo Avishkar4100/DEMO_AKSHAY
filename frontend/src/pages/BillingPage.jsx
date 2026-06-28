@@ -67,41 +67,41 @@ export default function BillingPage() {
 
       {/* Data Table */}
       <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-[0_2px_12px_rgba(0,0,0,.04)] dark:shadow-[0_2px_12px_rgba(0,0,0,.2)] border border-gray-100 dark:border-slate-700 overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm text-left">
+        <div className="table-responsive-wrap">
+          <table className="w-full text-xs md:text-sm text-left">
             <thead>
               <tr className="bg-gray-50/50 dark:bg-slate-700/50 border-b border-gray-100 dark:border-slate-700 text-gray-500 dark:text-slate-400">
-                <th className="px-6 py-4 font-semibold">Invoice</th>
-                <th className="px-6 py-4 font-semibold">Patient</th>
-                <th className="px-6 py-4 font-semibold">Amount</th>
-                <th className="px-6 py-4 font-semibold">Date</th>
-                <th className="px-6 py-4 font-semibold">Method</th>
-                <th className="px-6 py-4 font-semibold">Status</th>
-                <th className="px-6 py-4 font-semibold text-right">Actions</th>
+                <th className="px-4 md:px-6 py-3 md:py-4 font-semibold whitespace-nowrap">Invoice</th>
+                <th className="px-4 md:px-6 py-3 md:py-4 font-semibold whitespace-nowrap hide-tablet">Patient</th>
+                <th className="px-4 md:px-6 py-3 md:py-4 font-semibold whitespace-nowrap">Amount</th>
+                <th className="px-4 md:px-6 py-3 md:py-4 font-semibold whitespace-nowrap hide-mobile">Date</th>
+                <th className="hide-tablet px-4 md:px-6 py-3 md:py-4 font-semibold whitespace-nowrap">Method</th>
+                <th className="px-4 md:px-6 py-3 md:py-4 font-semibold whitespace-nowrap">Status</th>
+                <th className="px-4 md:px-6 py-3 md:py-4 font-semibold text-right whitespace-nowrap">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-gray-100 dark:divide-slate-700">
               {bills.map((b) => (
-                <tr key={b.id} className="hover:bg-indigo-50/30 transition-colors group">
-                  <td className="px-6 py-4">
-                    <span className="font-mono font-medium text-gray-500 bg-gray-100 px-2 py-1 rounded">{b.id}</span>
+                <tr key={b.id} className="hover:bg-indigo-50/30 dark:hover:bg-indigo-900/20 transition-colors group">
+                  <td className="px-4 md:px-6 py-3 md:py-4 whitespace-nowrap">
+                    <span className="font-mono font-medium text-gray-500 dark:text-slate-400 bg-gray-100 dark:bg-slate-700 px-1.5 md:px-2 py-0.5 md:py-1 rounded text-[10px] md:text-xs">{b.id}</span>
                   </td>
-                  <td className="px-6 py-4">
-                    <div className="font-semibold text-gray-900 group-hover:text-indigo-600 transition-colors">{b.patient}</div>
+                  <td className="hide-tablet px-4 md:px-6 py-3 md:py-4">
+                    <div className="font-semibold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors text-xs md:text-sm">{b.patient}</div>
                   </td>
-                  <td className="px-6 py-4">
-                    <div className="font-bold text-gray-900 dark:text-white">${b.amount.toFixed(2)}</div>
+                  <td className="px-4 md:px-6 py-3 md:py-4 whitespace-nowrap">
+                    <div className="font-bold text-gray-900 dark:text-white text-xs md:text-sm">${b.amount.toFixed(2)}</div>
                   </td>
-                  <td className="px-6 py-4 text-gray-600 dark:text-slate-300 font-medium">{b.date}</td>
-                  <td className="px-6 py-4 text-gray-500 dark:text-slate-400">{b.method}</td>
-                  <td className="px-6 py-4">
-                    <span className={`inline-flex px-3 py-1 rounded-full text-xs font-bold ${statusColors[b.status]}`}>
+                  <td className="hide-mobile px-4 md:px-6 py-3 md:py-4 text-gray-600 dark:text-slate-300 font-medium text-xs md:text-sm whitespace-nowrap">{b.date}</td>
+                  <td className="hide-tablet px-4 md:px-6 py-3 md:py-4 text-gray-500 dark:text-slate-400 text-xs md:text-sm">{b.method}</td>
+                  <td className="px-4 md:px-6 py-3 md:py-4">
+                    <span className={`inline-flex px-2 md:px-3 py-0.5 md:py-1 rounded-full text-[10px] md:text-xs font-bold whitespace-nowrap ${statusColors[b.status]}`}>
                       {b.status}
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-right space-x-3">
-                    <button className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 font-semibold hover:underline">View</button>
-                    <button className="text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200 font-semibold hover:underline">Print</button>
+                  <td className="px-4 md:px-6 py-3 md:py-4 text-right space-x-1.5 md:space-x-3 whitespace-nowrap">
+                    <button className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 font-semibold hover:underline text-xs md:text-sm touch-target touch-pad">View</button>
+                    <button className="text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200 font-semibold hover:underline text-xs md:text-sm touch-target touch-pad">Print</button>
                   </td>
                 </tr>
               ))}
