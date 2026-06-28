@@ -35,4 +35,30 @@ export const dashboardAPI = {
   realtimeStatus: () => api.get('/dashboard/realtime/status'),
 };
 
+// Patients endpoints
+export const patientsAPI = {
+  list: () => api.get('/dashboard/statistics/patient-stats'),
+  create: (data) => api.post('/api/patients', data),
+  get: (id) => api.get(`/api/patients/${id}`),
+  update: (id, data) => api.put(`/api/patients/${id}`, data),
+  delete: (id) => api.delete(`/api/patients/${id}`),
+};
+
+// Appointments endpoints
+export const appointmentsAPI = {
+  list: () => api.get('/dashboard/statistics/appointment-stats'),
+  create: (data) => api.post('/api/appointments', data),
+  get: (id) => api.get(`/api/appointments/${id}`),
+  update: (id, data) => api.put(`/api/appointments/${id}`, data),
+  cancel: (id, reason) => api.post(`/api/appointments/${id}/cancel`, { reason }),
+};
+
+// Billing endpoints
+export const billingAPI = {
+  list: () => api.get('/dashboard/statistics/revenue-stats'),
+  create: (data) => api.post('/api/billing', data),
+  get: (id) => api.get(`/api/billing/${id}`),
+  pay: (id, data) => api.post(`/api/billing/${id}/pay`, data),
+};
+
 export default api;
