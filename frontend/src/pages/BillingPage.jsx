@@ -20,27 +20,41 @@ export default function BillingPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Billing</h1>
-          <p className="text-gray-500 text-sm mt-1">Invoices and payment tracking</p>
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-sm">
+            <i className="fas fa-file-invoice-dollar text-white text-lg"></i>
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">Billing</h1>
+            <p className="text-gray-500 text-sm">Invoices and payment tracking</p>
+          </div>
         </div>
-        <button className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 text-sm font-medium transition-colors">
-          + New Invoice
+        <button className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 text-sm font-medium transition-colors shadow-sm">
+          <i className="fas fa-plus mr-1.5"></i> New Invoice
         </button>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
-          <p className="text-sm text-gray-500">Total Revenue</p>
-          <p className="text-2xl font-bold text-green-600 mt-1">${totalRevenue.toFixed(2)}</p>
+          <div className="flex items-center gap-2 mb-2">
+            <i className="fas fa-dollar-sign text-green-500"></i>
+            <p className="text-sm text-gray-500">Total Revenue</p>
+          </div>
+          <p className="text-2xl font-bold text-green-600">${totalRevenue.toFixed(2)}</p>
         </div>
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
-          <p className="text-sm text-gray-500">Pending</p>
-          <p className="text-2xl font-bold text-amber-600 mt-1">${pendingAmount.toFixed(2)}</p>
+          <div className="flex items-center gap-2 mb-2">
+            <i className="fas fa-hourglass-half text-amber-500"></i>
+            <p className="text-sm text-gray-500">Pending</p>
+          </div>
+          <p className="text-2xl font-bold text-amber-600">${pendingAmount.toFixed(2)}</p>
         </div>
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
-          <p className="text-sm text-gray-500">Total Invoices</p>
-          <p className="text-2xl font-bold text-gray-900 mt-1">{bills.length}</p>
+          <div className="flex items-center gap-2 mb-2">
+            <i className="fas fa-receipt text-indigo-500"></i>
+            <p className="text-sm text-gray-500">Total Invoices</p>
+          </div>
+          <p className="text-2xl font-bold text-gray-900">{bills.length}</p>
         </div>
       </div>
 
@@ -49,13 +63,13 @@ export default function BillingPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-gray-50 border-b border-gray-200">
-                <th className="text-left px-4 py-3 font-medium text-gray-600">Invoice</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-600">Patient</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-600">Amount</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-600">Date</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-600">Payment</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-600">Status</th>
-                <th className="text-right px-4 py-3 font-medium text-gray-600">Actions</th>
+                <th className="text-left px-4 py-3 font-medium text-gray-600"><i className="fas fa-hashtag text-indigo-400 mr-1.5"></i>Invoice</th>
+                <th className="text-left px-4 py-3 font-medium text-gray-600"><i className="fas fa-user text-indigo-400 mr-1.5"></i>Patient</th>
+                <th className="text-left px-4 py-3 font-medium text-gray-600"><i className="fas fa-dollar-sign text-indigo-400 mr-1.5"></i>Amount</th>
+                <th className="text-left px-4 py-3 font-medium text-gray-600"><i className="fas fa-calendar text-indigo-400 mr-1.5"></i>Date</th>
+                <th className="text-left px-4 py-3 font-medium text-gray-600"><i className="fas fa-credit-card text-indigo-400 mr-1.5"></i>Payment</th>
+                <th className="text-left px-4 py-3 font-medium text-gray-600"><i className="fas fa-circle text-indigo-400 mr-1.5"></i>Status</th>
+                <th className="text-right px-4 py-3 font-medium text-gray-600"><i className="fas fa-cog text-indigo-400 mr-1.5"></i>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -67,13 +81,21 @@ export default function BillingPage() {
                   <td className="px-4 py-3 text-gray-600">{b.date}</td>
                   <td className="px-4 py-3 text-gray-600">{b.method}</td>
                   <td className="px-4 py-3">
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${statusColors[b.status]}`}>
+                    <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${statusColors[b.status]}`}>
+                      <i className={`fas fa-circle text-[6px] ${
+                        b.status === 'Paid' ? 'text-green-500' :
+                        b.status === 'Pending' ? 'text-amber-500' : 'text-red-500'
+                      }`}></i>
                       {b.status}
                     </span>
                   </td>
                   <td className="px-4 py-3 text-right space-x-2">
-                    <button className="text-indigo-600 hover:text-indigo-800 text-sm font-medium">View</button>
-                    <button className="text-gray-600 hover:text-gray-800 text-sm font-medium">Print</button>
+                    <button className="text-indigo-600 hover:text-indigo-800 text-sm font-medium">
+                      <i className="fas fa-eye mr-1"></i>View
+                    </button>
+                    <button className="text-gray-600 hover:text-gray-800 text-sm font-medium">
+                      <i className="fas fa-print mr-1"></i>Print
+                    </button>
                   </td>
                 </tr>
               ))}

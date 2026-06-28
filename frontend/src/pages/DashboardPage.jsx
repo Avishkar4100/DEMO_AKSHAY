@@ -32,16 +32,19 @@ export default function DashboardPage() {
   }, [loadData]);
 
   const kpiCards = [
-    { label: 'Total Patients', value: kpis?.total_patients, icon: '👥', color: 'bg-blue-500' },
-    { label: 'Active Patients', value: kpis?.active_patients, icon: '❤️', color: 'bg-green-500' },
-    { label: 'Appointments Today', value: kpis?.appointments_today, icon: '📅', color: 'bg-amber-500' },
-    { label: 'Monthly Revenue', value: kpis?.revenue_month ? `$${kpis.revenue_month.toLocaleString()}` : '$0', icon: '💰', color: 'bg-purple-500' },
+    { label: 'Total Patients', value: kpis?.total_patients, icon: 'fa-users', color: 'bg-blue-500' },
+    { label: 'Active Patients', value: kpis?.active_patients, icon: 'fa-heart-pulse', color: 'bg-green-500' },
+    { label: 'Appointments Today', value: kpis?.appointments_today, icon: 'fa-calendar-day', color: 'bg-amber-500' },
+    { label: 'Monthly Revenue', value: kpis?.revenue_month ? `$${kpis.revenue_month.toLocaleString()}` : '$0', icon: 'fa-coins', color: 'bg-purple-500' },
   ];
 
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600" />
+        <div className="flex flex-col items-center gap-3">
+          <i className="fas fa-spinner fa-spin text-3xl text-indigo-500"></i>
+          <p className="text-sm text-gray-400">Loading dashboard...</p>
+        </div>
       </div>
     );
   }
@@ -49,29 +52,36 @@ export default function DashboardPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">Healthcare Dashboard</h1>
-        <p className="text-gray-500 text-sm mt-1">
-          {status?.last_update
-            ? `Last updated: ${new Date(status.last_update).toLocaleTimeString()}`
-            : 'Real-time hospital metrics and analytics'}
-        </p>
+      <div className="page-enter">
+        <div className="flex items-center gap-3 mb-1">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-sm">
+            <i className="fas fa-chart-line text-white text-lg"></i>
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">Healthcare Dashboard</h1>
+            <p className="text-gray-500 text-sm">
+              {status?.last_update
+                ? `Last updated: ${new Date(status.last_update).toLocaleTimeString()}`
+                : 'Real-time hospital metrics and analytics'}
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* Filters */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 flex flex-wrap gap-4 items-end">
         <div>
-          <label className="block text-xs font-medium text-gray-600 mb-1">From</label>
+          <label className="block text-xs font-medium text-gray-600 mb-1"><i className="fas fa-calendar-alt mr-1 text-indigo-400"></i> From</label>
           <input type="date" value={filters.dateFrom} onChange={(e) => setFilters({ ...filters, dateFrom: e.target.value })}
             className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none" />
         </div>
         <div>
-          <label className="block text-xs font-medium text-gray-600 mb-1">To</label>
+          <label className="block text-xs font-medium text-gray-600 mb-1"><i className="fas fa-calendar-alt mr-1 text-indigo-400"></i> To</label>
           <input type="date" value={filters.dateTo} onChange={(e) => setFilters({ ...filters, dateTo: e.target.value })}
             className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none" />
         </div>
         <div>
-          <label className="block text-xs font-medium text-gray-600 mb-1">Department</label>
+          <label className="block text-xs font-medium text-gray-600 mb-1"><i className="fas fa-building mr-1 text-indigo-400"></i> Department</label>
           <select value={filters.department} onChange={(e) => setFilters({ ...filters, department: e.target.value })}
             className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
             <option value="">All</option>
@@ -88,9 +98,9 @@ export default function DashboardPage() {
         {kpiCards.map((kpi, i) => (
           <div key={i} className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between mb-3">
-              <span className="text-2xl">{kpi.icon}</span>
+              <i className={`fas ${kpi.icon} text-2xl text-gray-700`}></i>
               <span className={`${kpi.color} text-white text-xs px-2 py-1 rounded-full`}>
-                Live
+                <i className="fas fa-circle text-[6px] mr-1 align-middle"></i> Live
               </span>
             </div>
             <p className="text-sm text-gray-500">{kpi.label}</p>
@@ -103,7 +113,7 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Appointment Status */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
-          <h3 className="font-semibold text-gray-900 mb-4">Appointment Status</h3>
+          <h3 className="font-semibold text-gray-900 mb-4"><i className="fas fa-chart-bar text-indigo-500 mr-2"></i> Appointment Status</h3>
           <div className="space-y-3">
             {charts?.appointment_status?.labels?.map((label, i) => (
               <div key={label}>
@@ -127,7 +137,7 @@ export default function DashboardPage() {
 
         {/* Revenue Trend */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
-          <h3 className="font-semibold text-gray-900 mb-4">Revenue Trend (7 Days)</h3>
+          <h3 className="font-semibold text-gray-900 mb-4"><i className="fas fa-chart-line text-green-500 mr-2"></i> Revenue Trend (7 Days)</h3>
           <div className="space-y-3">
             {charts?.revenue_trend?.dates?.map((date, i) => (
               <div key={date}>
@@ -150,7 +160,7 @@ export default function DashboardPage() {
 
         {/* Patient Distribution */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
-          <h3 className="font-semibold text-gray-900 mb-4">Patient Distribution</h3>
+          <h3 className="font-semibold text-gray-900 mb-4"><i className="fas fa-chart-pie text-purple-500 mr-2"></i> Patient Distribution</h3>
           <div className="space-y-3">
             {charts?.patient_distribution?.categories?.map((cat, i) => (
               <div key={cat}>
@@ -174,7 +184,7 @@ export default function DashboardPage() {
 
         {/* Department Metrics */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
-          <h3 className="font-semibold text-gray-900 mb-4">Department Metrics</h3>
+          <h3 className="font-semibold text-gray-900 mb-4"><i className="fas fa-building text-amber-500 mr-2"></i> Department Metrics</h3>
           <div className="space-y-4">
             {charts?.department_metrics?.departments?.map((dept, i) => (
               <div key={dept}>

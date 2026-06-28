@@ -30,7 +30,10 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-500 to-purple-700 p-4">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl p-8">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-indigo-600">🏥 HMS</h1>
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-lg mb-4">
+            <i className="fas fa-hospital text-white text-2xl"></i>
+          </div>
+          <h1 className="text-3xl font-bold brand-gradient">HMS</h1>
           <p className="text-gray-500 mt-2">Hospital Management System</p>
         </div>
 
@@ -91,13 +94,15 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-          <p className="text-xs font-semibold text-gray-500 mb-2">DEMO CREDENTIALS</p>
-          <div className="text-xs text-gray-500 space-y-1">
-            <p>👤 admin@hms.local / Admin@12345</p>
-            <p>👨‍⚕️ doctor@hms.local / Doctor@12345</p>
-            <p>👩‍⚕️ nurse@hms.local / Nurse@12345</p>
-            <p>📞 receptionist@hms.local / Recep@12345</p>
+        <div className="mt-6 p-4 bg-indigo-50 border border-indigo-100 rounded-lg">
+          <p className="text-xs font-semibold text-indigo-600 mb-2">
+            <i className="fas fa-info-circle mr-1"></i> DEMO CREDENTIALS
+          </p>
+          <div className="text-xs text-indigo-500 space-y-1.5">
+            <p><i className="fas fa-user-shield w-4 text-center"></i> admin@hms.local / Admin@12345</p>
+            <p><i className="fas fa-user-md w-4 text-center"></i> doctor@hms.local / Doctor@12345</p>
+            <p><i className="fas fa-user-nurse w-4 text-center"></i> nurse@hms.local / Nurse@12345</p>
+            <p><i className="fas fa-headset w-4 text-center"></i> receptionist@hms.local / Recep@12345</p>
           </div>
         </div>
       </div>

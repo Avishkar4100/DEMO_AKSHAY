@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { Link, useLocation, useNavigate, Outlet } from 'react-router-dom';
 
 const navItems = [
-  { path: '/dashboard', label: 'Dashboard', icon: '📊' },
-  { path: '/patients', label: 'Patients', icon: '👥' },
-  { path: '/appointments', label: 'Appointments', icon: '📅' },
-  { path: '/billing', label: 'Billing', icon: '💰' },
-  { path: '/profile', label: 'Profile', icon: '👤' },
+  { path: '/dashboard', label: 'Dashboard', icon: 'fa-chart-pie' },
+  { path: '/patients', label: 'Patients', icon: 'fa-users' },
+  { path: '/appointments', label: 'Appointments', icon: 'fa-calendar-check' },
+  { path: '/billing', label: 'Billing', icon: 'fa-file-invoice-dollar' },
+  { path: '/profile', label: 'Profile', icon: 'fa-user-circle' },
 ];
 
 export default function MainLayout() {
@@ -38,7 +38,15 @@ export default function MainLayout() {
         }`}
       >
         <div className="h-16 flex items-center px-6 border-b border-gray-200">
-          <h1 className="text-xl font-bold text-indigo-600">🏥 HMS</h1>
+          <Link to="/dashboard" className="flex items-center gap-3 no-underline">
+            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-sm">
+              <i className="fas fa-hospital text-white text-sm"></i>
+            </div>
+            <div>
+              <h1 className="text-lg font-bold text-indigo-600 leading-tight">HMS</h1>
+              <p className="text-[10px] text-gray-400 leading-tight">Hospital Management</p>
+            </div>
+          </Link>
         </div>
         <nav className="mt-4 px-3 space-y-1">
           {navItems.map((item) => (
@@ -52,7 +60,7 @@ export default function MainLayout() {
                   : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
               }`}
             >
-              <span>{item.icon}</span>
+              <i className={`fas ${item.icon} w-5 text-center text-sm ${location.pathname === item.path ? 'text-indigo-600' : 'text-gray-400'}`}></i>
               {item.label}
             </Link>
           ))}
@@ -62,7 +70,7 @@ export default function MainLayout() {
             onClick={handleLogout}
             className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-gray-600 hover:bg-red-50 hover:text-red-600 w-full transition-colors"
           >
-            <span>🚪</span> Logout
+            <i className="fas fa-sign-out-alt w-5 text-center text-sm text-gray-400"></i> Logout
           </button>
         </div>
       </aside>
@@ -75,11 +83,14 @@ export default function MainLayout() {
             onClick={() => setSidebarOpen(true)}
             className="p-2 rounded-lg text-gray-600 hover:bg-gray-100"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
+            <i className="fas fa-bars text-lg"></i>
           </button>
-          <h1 className="text-lg font-bold text-indigo-600 ml-3">🏥 HMS</h1>
+          <div className="flex items-center gap-2 ml-3">
+            <div className="w-7 h-7 rounded-md bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+              <i className="fas fa-hospital text-white text-xs"></i>
+            </div>
+            <h1 className="text-lg font-bold text-indigo-600">HMS</h1>
+          </div>
         </header>
 
         {/* Page content */}
